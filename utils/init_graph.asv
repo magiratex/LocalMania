@@ -1,0 +1,35 @@
+function init_graph
+
+VERBOSE = 0;
+sizeG = 10;
+edgeN = 32;
+
+% construct the hyper-graph (each node represents two states)
+[G, ind] = construct_hypergraph(sizeG);
+
+% randomize a directed graph
+edgeID = randi(sizeG*sizeG, 1, edgeN);
+refine_hypergraph(G, edg);
+
+if VERBOSE, 
+    validG(G, ind); 
+end;
+
+
+
+end
+
+
+function validG(G, ind)
+
+E = size(G, 1);
+
+for i = 1 : E
+    for j = 1 : E
+        if G(i, j)
+            fprintf('%d,%d->%d,%d\n', ind(i, :), ind(j, :));
+        end;
+    end;
+end;
+
+end
