@@ -8,8 +8,10 @@ addpath('.\utils');
 
 [seq, hseq, Gr] = generate_data;
 
-w = 1.0;
+w = 0.43;
 T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr);
+% w = guess_dcm_wts2(T, Gr)
+
 M = size(T, 1);
 
 % % draw
@@ -23,7 +25,7 @@ MMin = 1e-5;
 
 eHat = [zeros(1, M); 
         diag(ones(1, M))];
-for i = 1 : 1
+for i = 1 : 3
     tHat = [0,          Gr.init; 
             zeros(M,1), T;
             ];
@@ -39,8 +41,9 @@ for i = 1 : 1
 %     eHat (eHat < MMin) = MMin; 
 %     tHat = T;
 %     eHat = diag(ones(1, M));
-    estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
-    T = est(2:end, 2:end);
-    guess_dcm_wts2(T, Gr);
+    estT = hmmtrain(hseq, tHat, eHat, 'Verbose',fa, 'Tolerance', 1e-3);
+    T = estT(2:end, 2:end);
+    w = guess_dcm_wts2(T, Gr);
+    T = dcm_trans_prob(Gr.G, Gr.ind, w(1), Gr.attr);
 end;
 
