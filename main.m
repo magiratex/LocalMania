@@ -41,6 +41,7 @@ for i = 1 : 1
 %     eHat = diag(ones(1, M));
     estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
     T = est(2:end, 2:end);
-    
+    w = guess_dcm_wts2(T, Gr);
+    T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr);
 end;
 
