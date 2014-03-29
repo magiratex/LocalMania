@@ -21,18 +21,26 @@ M = size(T, 1);
 % gplot(Gr.G, coordinates);
 MMin = 1e-5;
 
+eHat = [zeros(1, M); 
+        diag(ones(1, M))];
 for i = 1 : 1
     tHat = [0,          Gr.init; 
             zeros(M,1), T;
             ];
     
-    eHat = [zeros(1, M); 
-            diag(ones(1, M))];
+    
     tHat (tHat < MMin) = MMin;
-    eHat (eHat < MMin) = MMin; 
+%     for j = 1 : size(tHat, 1)
+%         if sum(tHat(j, :)) > MMin
+%             tHat(j, tHat(j,:)<MMin) = MMin;
+%         end;
+%     end;
+%     tHat(:, 1) = 0;
+%     eHat (eHat < MMin) = MMin; 
 %     tHat = T;
 %     eHat = diag(ones(1, M));
     estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
+    T = est(2:end, 2:end);
     
 end;
 
