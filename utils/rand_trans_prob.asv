@@ -1,0 +1,8 @@
+function rand_trans_prob(G)
+
+E = size(G, 1);
+
+for i = 1 : E
+    N = sum(G(i, :));
+    rand(1, N)
+end;

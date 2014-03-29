@@ -1,0 +1,24 @@
+
+addpath('.\utils');
+
+rng(197);
+
+[seq, hseq, Gr] = generate_data;
+
+w = 1.0;
+T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr);
+M = size(T, 1);
+
+for i = 1 : 5
+%     tHat = [0,          Gr.init; 
+%             zeros(M,1), T;
+%             ];
+%     
+%     eHat = [zeros(1, M); 
+%             diag(ones(1, M))];
+    tHat = T;
+    eHat = diag();
+    estT = hmmtrain(hseq, tHat, eHat);
+    
+end;
+
