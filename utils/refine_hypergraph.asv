@@ -1,0 +1,17 @@
+function G = refine_hypergraph(G, eid, ind)
+
+% M = size(G, 1);
+
+for i = 1 : length(eid)
+    id = eid(i);
+    G(id, :) = 0;
+    G(:, id) = 0;
+end;
+
+invalidEdge = [];
+for i = 1 : length(eid)
+    id = eid(i);
+    if G(ind(id, 1), ind(id, 2)) == 0
+        invalidEdge = [invalidEdge, i];
+    end;
+end;

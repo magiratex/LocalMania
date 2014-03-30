@@ -2,18 +2,35 @@ function Gr = init_graph
 
 VERBOSE = 0;
 sizeG = 5;
-edgeN = 5;
+edgeN = 20;
 
 % construct the hyper-graph (each node represents two states)
 [G, ind] = construct_hypergraph(sizeG);
 
 % randomize a directed graph
-edgeID = randi(sizeG*sizeG, 1, edgeN);
-G = refine_hypergraph(G, edgeID);
+% edgeID = randi(sizeG*sizeG, 1, edgeN);
+edgeID = randperm(sizeG*sizeG, edgeN);
+[G, noedge] = refine_hypergraph(G, edgeID, ind);
+edgeID(noedge) = [];
+edgeN = length(edgeID);
 
 if VERBOSE, 
-    validG(G, ind); 
+%     validG(G, ind); 
+% draw
+    figure; hold on;
+    coordinates = rand(sizeG, 2)*5;
+    for i = 1 : sizeG
+        text(coordinates(i, 1), coordinates(i, 2), num2str(i));
+    end;
+    gplot(G, coordinates);
 end;
+
+
+
+% initial probabilities
+init = zeros(1, sizeG * sizeG); % initial matrix
+init(edgeID) = rand(1, length(edgeID));
+init(edgeID) = init(edgeID) ./ sum(init(edgeID));
 
 % initialize attraction
 attr = rand(1, sizeG);
@@ -29,6 +46,8 @@ Gr.corr = corrMat;
 Gr.w = [0.3, 0.7];
 Gr.size = sizeG;
 Gr.edges = edgeN;
+Gr.edgeID = edgeID;
+Gr.init = init;
 
 end
 

@@ -21,10 +21,11 @@ Trans = T;
 tHat = [0,          Init; 
         zeros(M,1), Trans;
         ];
+% tHat = Trans;
     
 eHat = [zeros(1, M); 
         diag(ones(1, M))];
-
+% eHat = diag(ones(1, M));
 
 % normalization
 for i = 1 : size(tHat, 1)
@@ -38,7 +39,16 @@ end;
 L = randi(maxL-minL, 1, K) + minL;
 for k = 1 : K
     seq = hmmgenerate(L(k), tHat, eHat);
+    for t = 1 : length(seq)
+        if Init(seq(t)) == 0, break; % if there is no ending point, hmm will initialize a new start
+        end;
+    end;
+    if t == 1, continue;
+    else
+        seq = seq(1:t-1);
+    end;
     hypseq{k} = seq;
+    
     obs{k} = translate_seq(seq, ind);
     
 end;
