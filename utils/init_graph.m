@@ -1,8 +1,8 @@
 function Gr = init_graph
 
 VERBOSE = 0;
-sizeG = 5;
-edgeN = 20;
+sizeG = 10;
+edgeN = 36;
 
 % construct the hyper-graph (each node represents two states)
 [G, ind] = construct_hypergraph(sizeG);
@@ -43,7 +43,8 @@ Gr.G = G;
 Gr.ind = ind;
 Gr.attr = attr;
 Gr.corr = corrMat;
-Gr.w = [0.3, 0.7];
+% Gr.w = [0.3, 0.7];
+Gr.w = 0.31;
 Gr.size = sizeG;
 Gr.edges = edgeN;
 Gr.edgeID = edgeID;

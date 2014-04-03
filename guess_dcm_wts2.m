@@ -17,9 +17,11 @@ for i = 1 : N
             prev = Gr.ind(i, :);
             curr = Gr.ind(j, :);
             if prev(1) == curr(2)
-                x = [x; 0.01, Gr.corr(i,j)];
+                x = [x; 0.01];
+                %x = [x; 0.01, Gr.corr(i,j)];
             else
-                x = [x; Gr.attr(curr(2)), Gr.corr(i,j)];
+                x = [x; Gr.attr(curr(2))];
+                %x = [x; Gr.attr(curr(2)), Gr.corr(i,j)];
             end;
             c = [c; log(T(i, j))];
         end;

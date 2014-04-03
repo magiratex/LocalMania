@@ -22,9 +22,11 @@ Gr = init_graph;
 
 %% estimate weights of dcm
 % Initialization
-w = [0.1, 0.1];
-T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, Gr.corr);
-% w = guess_dcm_wts2(T, Gr)
+% w = [0.5, 0.1];
+% T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, Gr.corr);
+w = 0.1;
+T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, []);
+w = guess_dcm_wts2(T, Gr)
 
 M = size(T, 1);
 
@@ -48,7 +50,7 @@ for i = 1 : 3
             zeros(M,1), T;
             ];
 %     tHat = T;
-    tHat (tHat < MMin) = MMin;
+%     tHat (tHat < MMin) = MMin;
     
     estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
     T = estT(2:end, 2:end);
