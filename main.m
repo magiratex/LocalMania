@@ -40,8 +40,9 @@ M = size(T, 1);
 
 MMin = 1e-5;
 eHat = [zeros(1, M); 
-        diag(ones(1, M))];
+        diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
+attrPrior = Gr.attr;
 
 % Iteratively procedure
 for i = 1 : 3
@@ -56,7 +57,8 @@ for i = 1 : 3
     T = estT(2:end, 2:end);
 %     T = estT;
     w = guess_dcm_wts2(T, Gr)
-    T = dcm_trans_prob(Gr.G, Gr.ind, w(2:3)', Gr.attr, Gr.corr);
+    estAttr = guess_attr(T, w, attrPrior, Gr);
+    T = dcm_trans_prob(Gr.G, Gr.ind, w(2:3)', estAttr, []);
     toc
 end;
 

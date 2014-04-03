@@ -29,7 +29,7 @@ T = dcm_trans_prob(G, ind, w, attr, []);
 % generate sequences
 % Init = zeros(1, N*N); % initial matrix
 % Init(1:3) = [0.1 0.7 0.2];
-[seq, hseq] = gen_seq(T, ind, Init, N, N+10, 5000);
+[seq, hseq] = gen_seq(T, ind, Init, N, N+10, 500);
 
 % save
 Gr.trans = T;
