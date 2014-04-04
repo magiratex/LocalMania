@@ -18,7 +18,7 @@ for i = 1 : N
     for j = 1 : length(c)-1
         %X = [X; x - circshift(x, j)];
         coeff = [coeff; xNeg, circshift(xNeg, j)];
-        C = [Y; c - circshift(c, j)];
+        C = [C; c - circshift(c, j)];
     end;
 end;
 
@@ -29,5 +29,5 @@ for i = 1 : size(coeff, 1)
     K(i, coeff(i, 2)) = -1;
 end;
 
-x = (eye(N) + K' * K) - (P' + K' * C);
+x = eye(N)/(eye(N) + K' * K) * (P' + K' * C);
 attr = x';
