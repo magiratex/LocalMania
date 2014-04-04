@@ -42,7 +42,7 @@ MMin = 1e-5;
 eHat = [zeros(1, M); 
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
-attrPrior = Gr.attr;
+attrPrior = (Gr.attr + (rand(M)-0.5)*0.1) .* Gr.G;
 
 % Iteratively procedure
 for i = 1 : 3
