@@ -19,8 +19,12 @@ for i = 1 : N
     for j = 1 : length(c)-1
         %X = [X; x - circshift(x, j)];
         coeff = [coeff; xNeg, circshift(xNeg, j)];
+<<<<<<< HEAD
         C = [Y; c - circshift(c, j)];
         I = [I; ones(size(c, 1), 1) * i];
+=======
+        C = [C; c - circshift(c, j)];
+>>>>>>> e65d168c41afbcd6747f33f09f02064f4e62e44e
     end;
 end;
 
@@ -31,6 +35,7 @@ for i = 1 : size(coeff, 1)
     K(i, coeff(i, 2)) = -1;
 end;
 
+<<<<<<< HEAD
 % x = (eye(N) + K' * K) - (P' + K' * C);
 % attr = x';
 
@@ -44,3 +49,7 @@ attr = fminunc(f, P);
 % function F = efunc(X, P, I, C)
 % 
 % F = sum(sum((X - P).^2)) + sum((sum(K .* X(I,:), 2) - C).^2);
+=======
+x = eye(N)/(eye(N) + K' * K) * (P' + K' * C);
+attr = x';
+>>>>>>> e65d168c41afbcd6747f33f09f02064f4e62e44e
