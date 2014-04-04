@@ -33,7 +33,8 @@ init(edgeID) = rand(1, length(edgeID));
 init(edgeID) = init(edgeID) ./ sum(init(edgeID));
 
 % initialize attraction
-attr = rand(1, sizeG);
+attr = rand(sizeG * sizeG);
+attr = attr .* G;
 
 % initialize correlation
 corrMat = init_corr(G, ind);
