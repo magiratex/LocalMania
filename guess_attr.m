@@ -1,4 +1,4 @@
-function attr = guess_attr(T, w, P, Gr)
+function [attr, fval] = guess_attr(T, w, P, Gr)
 
 MMin = 1e-5;
 N = size(T, 1);
@@ -30,14 +30,16 @@ for i = 1 : size(coeff, 1)
     K(i, coeff(i, 1)) = 1;
     K(i, coeff(i, 2)) = -1;
 end;
+M = size(C, 1);
 
 % x = (eye(N) + K' * K) - (P' + K' * C);
 % attr = x';
 
-f = @(X) sum(sum((X - P).^2)) + sum((sum(K .* X(I,:), 2) - C).^2);
+beta = 0.01;
+f = @(X) sum(sum((X - P).^2))/N^2 + beta * sum((sum(K .* X(I,:), 2) - C).^2)/M;
 
-attr = fminunc(f, P);
-
+options = optimoptions('fminunc','Display', 'off');
+[attr, fval] = fminunc(f, P, options);
 
 % X = fminunc(@efunc, P);
 

@@ -12,11 +12,12 @@ if isempty(corr)
         prev = ind(i, :);
         for j = 1 : length(I)
             curr = ind(I(j), :);
-            if prev(1) == curr(2)
-                G(i, I(j)) = exp(w * 0.01);
-            else
-                G(i, I(j)) = exp(w * attr(curr(2)));
-            end;
+%             if prev(1) == curr(2)
+%                 G(i, I(j)) = exp(w * 0.01);
+%             else
+%                 G(i, I(j)) = exp(w * attr(curr(2)));
+%             end;
+            G(i, I(j)) = exp(w * attr(i, I(j)));
         end;
         G(i, I) = G(i, I) ./ sum(G(i, I));
     end;
