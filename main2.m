@@ -61,14 +61,15 @@ pE = -1;
 flag = false;
 for i = 1 : 1000
     [xHat, ~] = mOptimState(K, C/w, I, P, beta);
-    [wHat, ~] = mOptimWeight(X, K, C, I, w);
+    [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
     E = mEvalEnergy(xHat, K, C, I, P, wHat, beta);
     E
+    w = wHat
     if abs(E - pE) > 1e-3
         pE = E;
-        if flag, break; end;
+        flag = false;
     else
-        flag = true;
+        if flag, break; end;
         
         % update T
         T = dcm_trans_prob(Gr.G, Gr.ind, wHat, xHat, []);
@@ -78,6 +79,7 @@ for i = 1 : 1000
         estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
         T = estT(2:end, 2:end);        
         [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
+        flag = true;
     end;
 end;
 
