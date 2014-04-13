@@ -5,7 +5,7 @@ close all;
 addpath('.\utils');
 warning('OFF', 'optim:fminunc:SwitchingMethod');
 
-rng(371);
+rng(1431);
 
 %% initialize graph information
 %   - graph structure
@@ -37,21 +37,25 @@ eHat = [zeros(1, M);
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
 % attrPrior = max((Gr.attr + rand(M)*0.1), 0) .* Gr.G;
-% attrPrior = (Gr.attr + rand(M)*0.1) .* Gr.G;
-attrPrior = Gr.attr;
+attrPrior = (Gr.attr + rand(M)*0.1) .* Gr.G;
+% attrPrior = Gr.attr;
+% attrPrior = (Gr.attr + 0.1) .* Gr.G;
+
+backup.xPrior = attrPrior;
 
 %% test
-debug = 1;
+debug = 0;
 if debug
-    w = 0.32;
+    w = 0.92;
     T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, []);
     [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
     [wHat, ~] = mOptimWeight(P, K, C, I, 0.1);
     wHat
     [xHat, ~] = mOptimState(K, C/w, I, (P + 0.1).*Gr.G, beta);
 else % prior
-    w = 0.1;
+    w = 0.7;
     T = dcm_trans_prob(Gr.G, Gr.ind, w, attrPrior, []);
+    backup.initw = w;
 end;
 
 %%
@@ -66,21 +70,25 @@ xHat = P;
 
 pE = -1;
 flag = false;
-for i = 1 : 1000
-    [xHat, ~] = mOptimState(K, C/w, I, P, beta);
-%     mEvalEnergy(xHat, K, C, I, P, w, beta)
-
-%     T = dcm_trans_prob(Gr.G, Gr.ind, w, P, []);
-%     [K, C, I, ~] = mAccessVal(T, P, Gr);
-
-    [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
-    wHat
-%     mEvalEnergy(xHat, K, C, I, P, wHat, beta)
+for i = 1 : 30
+    fprintf('------------ %d ------------\n', i);
     
+    [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
+    
+    [xHat, ~] = mOptimState(K, C/w, I, P, beta); 
 
-    E = mEvalEnergy(xHat, K, C, I, P, wHat, beta);
-    E
+    
     w = wHat
+    
+    T = dcm_trans_prob(Gr.G, Gr.ind, w, xHat, []);
+    [K, C, I, ~] = mAccessVal(T, P, Gr);
+    
+    E = mEvalEnergy(xHat, K, C, I, P, wHat, beta)
+    
+    iter(i).w = wHat;
+    iter(i).E = E;
+    iter(i).x = xHat;
+    
     if abs(E - pE) > 1e-3
         pE = E;
         flag = false;
@@ -94,8 +102,12 @@ for i = 1 : 1000
                 ];
         estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
         T = estT(2:end, 2:end);        
-        [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
+        [K, C, I, P] = mAccessVal(T, P, Gr);
         flag = true;
     end;
 end;
+
+backup.iter = iter;
+
+save results\data backup; 
 
