@@ -21,15 +21,7 @@ Gr = init_graph;
 [seq, hseq, Gr] = generate_data(Gr);
 
 
-%% estimate weights of dcm
-% Initialization
-% w = [0.5, 0.1];
-% T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, Gr.corr);
-w = 0.8;
-T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, []);
-% w = guess_dcm_wts2(T, Gr)
-
-M = size(T, 1);
+M = size(Gr.G, 1);
 
 % % draw
 % figure; hold on;
@@ -40,12 +32,27 @@ M = size(T, 1);
 % gplot(Gr.G, coordinates);
 
 MMin = 1e-5;
+beta = 0.01;
 eHat = [zeros(1, M); 
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
 % attrPrior = max((Gr.attr + rand(M)*0.1), 0) .* Gr.G;
 % attrPrior = (Gr.attr + rand(M)*0.1) .* Gr.G;
 attrPrior = Gr.attr;
+
+%% test
+debug = 1;
+if debug
+    w = 0.32;
+    T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, []);
+    [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
+    [wHat, ~] = mOptimWeight(P, K, C, I, 0.1);
+    wHat
+    [xHat, ~] = mOptimState(K, C/w, I, (P + 0.1).*Gr.G, beta);
+else % prior
+    w = 0.1;
+    T = dcm_trans_prob(Gr.G, Gr.ind, w, attrPrior, []);
+end;
 
 %%
 tHat = [0,          Gr.init; 
@@ -55,28 +62,40 @@ estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
 T = estT(2:end, 2:end);
 
 [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
+xHat = P;
 
-prevw = -1;
-
+pE = -1;
+flag = false;
 for i = 1 : 1000
-    [X, E] = mOptimState(K, C/w, I, P);
-    mOptimWeight()
-%     [estAttr, fval] = guess_attr(T, w, attrPrior, Gr);
-%     fval
-%     T = dcm_trans_prob(Gr.G, Gr.ind, w, estAttr, []);
-%     w = guess_dcm_wts2(T, Gr)
-%     w = w(end);
-%     
-%     if abs(w - prevw) > MMin
-%         prevw = w;
-%     else
-%         disp('converges... recompute T');
-%         tHat = [0,          Gr.init; 
-%                 zeros(M,1), T;
-%                 ];
-%         estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
-%         T = estT(2:end, 2:end);
-%     end;
+    [xHat, ~] = mOptimState(K, C/w, I, P, beta);
+%     mEvalEnergy(xHat, K, C, I, P, w, beta)
+
+%     T = dcm_trans_prob(Gr.G, Gr.ind, w, P, []);
+%     [K, C, I, ~] = mAccessVal(T, P, Gr);
+
+    [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
+    wHat
+%     mEvalEnergy(xHat, K, C, I, P, wHat, beta)
     
+
+    E = mEvalEnergy(xHat, K, C, I, P, wHat, beta);
+    E
+    w = wHat
+    if abs(E - pE) > 1e-3
+        pE = E;
+        flag = false;
+    else
+        if flag, break; end;
+        
+        % update T
+        T = dcm_trans_prob(Gr.G, Gr.ind, wHat, xHat, []);
+        tHat = [0,          Gr.init; 
+                zeros(M,1), T;
+                ];
+        estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
+        T = estT(2:end, 2:end);        
+        [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
+        flag = true;
+    end;
 end;
 
