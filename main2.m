@@ -83,6 +83,7 @@ tHat = [0,          Gr.init;
         ];
 estT = hmmtrain(hseq, tHat, eHat, 'Verbose',true, 'Tolerance', 1e-3);
 T = estT(2:end, 2:end);
+backup.hmmT = T;
 toc
 
 [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
