@@ -1,0 +1,12 @@
+addpath
+
+load results\data_30.6.mat; % data with noise at transition probability
+
+gtTrans = backup.Gr.trans;
+
+init = backup.Gr.init;
+attrPrior = backup.xPrior;
+
+% random choice
+len = 10;
+rand_gen_seq(len, init, attrPrior);
