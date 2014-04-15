@@ -1,0 +1,53 @@
+%% large
+
+% fid = 1.0;
+% tic
+% main2(5000, 10, 80, 2.5, 1.0, fid);
+% toc
+% 
+% fid = fid + 0.1;
+% tic
+% main2(5000, 10, 80, 2.5, 0.1, fid);
+% toc
+% 
+% fid = fid + 0.1;
+% tic
+% main2(5000, 10, 80, 2.5, 3.5, fid);
+% toc
+
+
+% main2(500, 5, 20, 1.5, 3.0, 0);
+
+%%
+
+% fid = 2.0;
+% tic
+% main2(5000, 12, 90, 2.5, 1.0, fid);
+% toc
+% 
+% fid = fid + 0.1;
+% tic
+% main2(5000, 12, 90, 2.5, 0.1, fid);
+% toc
+% 
+% fid = fid + 0.1;
+% tic
+% main2(5000, 12, 90, 2.5, 3.5, fid);
+% toc
+
+%%
+
+fid = 2.0;
+tic
+main2(5000, 5, 12, 2.5, 1.0, fid);
+toc
+
+fid = fid + 0.1;
+tic
+main2(5000, 5, 20, 2.5, 0.1, fid);
+toc
+
+fid = fid + 0.1;
+tic
+main2(5000, 5, 20, 2.5, 3.5, fid);
+toc

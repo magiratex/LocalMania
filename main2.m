@@ -1,7 +1,7 @@
 function main2(nsample, sizeG, edgeN, gtW, initW, fid)
 
 % clear;
-clc;
+% clc;
 close all;
 
 addpath('.\utils');
@@ -29,7 +29,7 @@ Gr = init_graph(sizeG, edgeN, gtW);
 
 
 %% generate sequences
-[seq, hseq, Gr] = generate_data(Gr, nsample);
+[seq, hseq, Gr] = generate_data(Gr, nsample, false);
 
 
 M = size(Gr.G, 1);
@@ -58,8 +58,14 @@ backup.Gr = Gr;
 %% test
 debug = 0;
 if debug
-    w = 0.92;
+    w = 2.12;
     T = dcm_trans_prob(Gr.G, Gr.ind, w, Gr.attr, []);
+    T = (T + rand(size(T))*0.5) .* Gr.G;
+    for i = 1 : size(T, 1)
+        if sum(T(i, :))
+            T(i, :) = T(i, :) ./ sum(T(i, :));
+        end;
+    end;
     [K, C, I, P] = mAccessVal(T, attrPrior, Gr);
     [wHat, ~] = mOptimWeight(P, K, C, I, 0.1);
     wHat
@@ -104,6 +110,7 @@ for i = 1 : 30
     iter(i).w = wHat;
     iter(i).E = E;
     iter(i).x = xHat;
+    iter(i).T = T;
     
     if abs(E - pE) > 1e-3
         pE = E;
@@ -124,5 +131,5 @@ for i = 1 : 30
 end;
 
 backup.iter = iter;
-save(['results\data_',num2str(fid)], 'backup'); 
+save(['results\data_',num2str(fid),'.mat'], 'backup'); 
 

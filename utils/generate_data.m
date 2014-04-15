@@ -1,4 +1,4 @@
-function [seq, hseq, Gr] = generate_data(Gr, NSample)
+function [seq, hseq, Gr] = generate_data(Gr, NSample, tnoise)
 
 % VERBOSE = 0;
 % N = 5;
@@ -25,6 +25,16 @@ Init = Gr.init;
 %%
 % T = dcm_trans_prob(G, ind, w, attr, corr);
 T = dcm_trans_prob(G, ind, w, attr, []);
+
+if tnoise
+    Gr.T0 = T;
+    T = (T + rand(size(T))*0.5) .* Gr.G;
+    for i = 1 : size(T, 1)
+        if sum(T(i, :))
+            T(i, :) = T(i, :) ./ sum(T(i, :));
+        end;
+    end;
+end;
 
 % generate sequences
 % Init = zeros(1, N*N); % initial matrix
