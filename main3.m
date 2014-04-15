@@ -29,7 +29,7 @@ Gr = init_graph(sizeG, edgeN, gtW);
 
 
 %% generate sequences
-[seq, hseq, Gr] = generate_data(Gr, nsample, true, d);
+[seq, hseq, Gr] = generate_data(Gr, nsample, false, d);
 
 
 M = size(Gr.G, 1);
@@ -48,8 +48,8 @@ eHat = [zeros(1, M);
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
 % attrPrior = max((Gr.attr + rand(M)*0.1), 0) .* Gr.G;
-% attrPrior = (Gr.attr + rand(M)*d) .* Gr.G;
-attrPrior = Gr.attr;
+attrPrior = (Gr.attr + rand(M)*d) .* Gr.G;
+% attrPrior = Gr.attr;
 % attrPrior = (Gr.attr + 0.1) .* Gr.G;
 
 backup.rngSeed = rseed;

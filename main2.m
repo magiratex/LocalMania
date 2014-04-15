@@ -43,7 +43,7 @@ M = size(Gr.G, 1);
 % gplot(Gr.G, coordinates);
 
 MMin = 1e-5;
-beta = 0.01;
+beta = 0.5;
 eHat = [zeros(1, M); 
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
