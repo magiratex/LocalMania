@@ -29,6 +29,7 @@ T = dcm_trans_prob(G, ind, w, attr, []);
 if tnoise
     Gr.T0 = T;
     d = varargin{1};
+    disp(['Noise level: --- ', num2str(d)]);
     T = (T + rand(size(T))*d) .* Gr.G;
     for i = 1 : size(T, 1)
         if sum(T(i, :))
