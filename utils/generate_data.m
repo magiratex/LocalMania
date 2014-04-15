@@ -1,4 +1,4 @@
-function [seq, hseq, Gr] = generate_data(Gr, NSample, tnoise)
+function [seq, hseq, Gr] = generate_data(Gr, NSample, tnoise, varargin)
 
 % VERBOSE = 0;
 % N = 5;
@@ -28,7 +28,8 @@ T = dcm_trans_prob(G, ind, w, attr, []);
 
 if tnoise
     Gr.T0 = T;
-    T = (T + rand(size(T))*0.5) .* Gr.G;
+    d = varargin{1};
+    T = (T + rand(size(T))*d) .* Gr.G;
     for i = 1 : size(T, 1)
         if sum(T(i, :))
             T(i, :) = T(i, :) ./ sum(T(i, :));

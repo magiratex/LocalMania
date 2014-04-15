@@ -29,7 +29,7 @@ Gr = init_graph(sizeG, edgeN, gtW);
 
 
 %% generate sequences
-[seq, hseq, Gr] = generate_data(Gr, nsample, true);
+[seq, hseq, Gr] = generate_data(Gr, nsample, true, d);
 
 
 M = size(Gr.G, 1);
