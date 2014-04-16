@@ -37,20 +37,23 @@ end;
     
 %%
 L = randi(maxL-minL, 1, K) + minL;
+seqCount = 1;
 for k = 1 : K
+%     [~,seq] = hmmgenerate(L(k), tHat, eHat);
+%     seq = seq - 1;
     seq = hmmgenerate(L(k), tHat, eHat);
     for t = 1 : length(seq)
         if Init(seq(t)) == 0, break; % if there is no ending point, hmm will initialize a new start
         end;
     end;
     if t == 1, continue;
-    else
+    elseif t < length(seq)
         seq = seq(1:t-1);
     end;
-    hypseq{k} = seq;
+    hypseq{seqCount} = seq;
     
-    obs{k} = translate_seq(seq, ind);
-    
+    obs{seqCount} = translate_seq(seq, ind);
+    seqCount = seqCount + 1;
 end;
 
 % seq = hmmgenerate(100, tHat, eHat);
