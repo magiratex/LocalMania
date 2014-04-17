@@ -1,4 +1,4 @@
-function main3(nsample, sizeG, edgeN, gtW, initW, fid, d)
+function main3(nsample, sizeG, edgeN, gtW, initW, fname, d)
 
 % clear;
 % clc;
@@ -29,7 +29,7 @@ Gr = init_graph(sizeG, edgeN, gtW);
 
 
 %% generate sequences
-[seq, hseq, Gr] = generate_data(Gr, nsample, true, d);
+[seq, hseq, Gr] = generate_data(Gr, nsample, false);
 
 
 M = size(Gr.G, 1);
@@ -48,13 +48,14 @@ eHat = [zeros(1, M);
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
 % attrPrior = max((Gr.attr + rand(M)*0.1), 0) .* Gr.G;
-% attrPrior = (Gr.attr + rand(M)*d) .* Gr.G;
-attrPrior = Gr.attr;
+attrPrior = (Gr.attr + rand(M)*d) .* Gr.G;
+% attrPrior = Gr.attr;
 % attrPrior = (Gr.attr + 0.1) .* Gr.G;
 
 backup.rngSeed = rseed;
 backup.xPrior = attrPrior;
 backup.Gr = Gr;
+backup.beta =beta;
 %% test
 debug = 0;
 if debug
@@ -98,11 +99,8 @@ for i = 1 : 30
     [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
     toc
     
-    tic
-    [xHat, ~] = mOptimState(K, C/w, I, P, beta); 
-    toc
-    
-    w = wHat
+    w = wHat * 0.99 + w * 0.01
+%     w = wHat
     
     T = dcm_trans_prob(Gr.G, Gr.ind, w, xHat, []);
     [K, C, I, ~] = mAccessVal(T, P, Gr);
@@ -133,5 +131,5 @@ for i = 1 : 30
 end;
 
 backup.iter = iter;
-save(['results\data_',num2str(fid),'.mat'], 'backup'); 
+save(['results\data_',fname,'.mat'], 'backup'); 
 

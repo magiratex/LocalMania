@@ -1,4 +1,4 @@
-function main2(nsample, sizeG, edgeN, gtW, initW, fid)
+function main2(nsample, sizeG, edgeN, gtW, initW, fname)
 
 % clear;
 % clc;
@@ -43,7 +43,7 @@ M = size(Gr.G, 1);
 % gplot(Gr.G, coordinates);
 
 MMin = 1e-5;
-beta = 0.5;
+beta = 0.01;
 eHat = [zeros(1, M); 
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
@@ -98,11 +98,8 @@ for i = 1 : 30
     [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
     toc
     
-    tic
-    [xHat, ~] = mOptimState(K, C/w, I, P, beta); 
-    toc
-    
-    w = wHat
+    w = wHat * 0.99 + w * 0.01
+%     w = wHat
     
     T = dcm_trans_prob(Gr.G, Gr.ind, w, xHat, []);
     [K, C, I, ~] = mAccessVal(T, P, Gr);
@@ -133,5 +130,5 @@ for i = 1 : 30
 end;
 
 backup.iter = iter;
-save(['results\data_',num2str(fid),'.mat'], 'backup'); 
+save(['results\data_',fname,'.mat'], 'backup'); 
 

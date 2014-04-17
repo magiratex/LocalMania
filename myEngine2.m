@@ -1,10 +1,14 @@
 clc;
 close all;
-fid = 10.1;
+
+exp = 'exp2ex_';
+fid = 0;
+% fid = 10.1;
 for w = 0.1:0.4:5
     
-    fprintf('----- %f: %f -------\n', fid, w)
-    main2(3000, 5, 15, w, 1.0, fid);
+    fprintf('\n\n\n----- %f: %f -------\n', fid, w)
+    fstr = [exp, num2str(fid)];
+    main2(3000, 5, 20, w, 1.0, fstr);
     
-    fid = fid + 0.1;
+    fid = fid + 1;
 end

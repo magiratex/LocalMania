@@ -3,15 +3,17 @@
 clc;
 close all;
 
-fid = 30.1; 
+exp = 'exp3_';
+fid = 0;
 
 for d = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5]
 % for d = [0.01, ]
     
     fprintf('----- %f: noise %f -------\n', fid, d)
-    main3(5000, 5, 15, 2.5, 2.0, fid, d);
+    fstr = [exp, num2str(fid)];
+    main3(3000, 5, 15, 2.5, 1.0, fstr, d);
     
-    fid = fid + 0.1;
+    fid = fid + 1;
 end
 
 %%
