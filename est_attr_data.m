@@ -1,11 +1,11 @@
-function [stat, origStat] = est_attr_data
+function [stat, origStat] = est_attr_data(seq, Gr)
 
 % load results\data_30.1.mat;
-load results\data_0.mat;
+% load results\data_0.mat;
 
-seq = backup.seq;
+% seq = backup.seq;
 
-stat = zeros(size(backup.Gr.G));
+stat = zeros(size(Gr.G));
 for i = 1 : length(seq)
     stat = count_app(seq{i}, stat);
 end;

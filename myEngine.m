@@ -37,7 +37,7 @@ clc
 
 
 %%
-
+clc
 exp = 'exp2_';
 fid = 0;
 fstr = [exp, num2str(fid)];

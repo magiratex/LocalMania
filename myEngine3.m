@@ -3,7 +3,7 @@
 clc;
 close all;
 
-exp = 'exp3_beta0.5_';
+exp = 'exp3_';
 % exp = 'exp4_';
 fid = 0;
 
@@ -19,5 +19,9 @@ end
 
 %%
 
-% d = 0.5;
-% main3(5000, 5, 15, 2.5, 1.0, 1000, d);
+clc;
+close all;
+
+exp = 'exp3_est_prior';
+fstr = exp;
+main3(3000, 8, 50, 2.5, 4.0, fstr, 0.0);

@@ -51,9 +51,9 @@ eHat = [zeros(1, M);
 % attrPrior = (Gr.attr + rand(M)*d) .* Gr.G;
 % attrPrior = Gr.attr;
 % attrPrior = (Gr.attr + 0.1) .* Gr.G;
-noisePrior = (Gr.attr + 0.1) .* Gr.G;
+noisePrior = 
 attrPrior = est_attr_data(hseq, Gr);
-attrPriro = est_prior(attrPrior, noisePrior);
+est_prior(attrPrior);
 
 backup.rngSeed = rseed;
 backup.xPrior = attrPrior;
@@ -98,11 +98,6 @@ pE = -1;
 flag = false;
 for i = 1 : 30
     fprintf('------------ %d ------------\n', i);
-    
-    tic
-    [xHat, ~] = mOptimState(K, C/w, I, P, beta);
-    toc
-    
     tic
     [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
     toc

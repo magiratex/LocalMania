@@ -1,4 +1,4 @@
-function main3(nsample, sizeG, edgeN, gtW, initW, fname, d)
+function main2(nsample, sizeG, edgeN, gtW, initW, fname)
 
 % clear;
 % clc;
@@ -43,22 +43,18 @@ M = size(Gr.G, 1);
 % gplot(Gr.G, coordinates);
 
 MMin = 1e-5;
-beta = 0.1;
+beta = 0.01;
 eHat = [zeros(1, M); 
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
 % attrPrior = max((Gr.attr + rand(M)*0.1), 0) .* Gr.G;
-% attrPrior = (Gr.attr + rand(M)*d) .* Gr.G;
-% attrPrior = Gr.attr;
+% attrPrior = (Gr.attr + rand(M)*0.1) .* Gr.G;
+attrPrior = Gr.attr;
 % attrPrior = (Gr.attr + 0.1) .* Gr.G;
-noisePrior = (Gr.attr + 0.1) .* Gr.G;
-attrPrior = est_attr_data(hseq, Gr);
-attrPriro = est_prior(attrPrior, noisePrior);
 
 backup.rngSeed = rseed;
 backup.xPrior = attrPrior;
 backup.Gr = Gr;
-backup.beta =beta;
 %% test
 debug = 0;
 if debug
@@ -98,11 +94,7 @@ pE = -1;
 flag = false;
 for i = 1 : 30
     fprintf('------------ %d ------------\n', i);
-    
-    tic
-    [xHat, ~] = mOptimState(K, C/w, I, P, beta);
-    toc
-    
+       
     tic
     [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
     toc
