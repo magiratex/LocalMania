@@ -1,0 +1,39 @@
+function pos = sample_goal(goal, varargin)
+
+if isempty(varargin)
+
+    pos = mvnrnd(goal.pos, goal.afford);
+else
+    nextg = varargin{1};
+    currg = varargin{2};
+    goals = varargin{3};
+    pos = [];
+    
+    % FIXME: hard-coded
+    if (nextg == 12 && currg == 8) || ...
+       (nextg == 8 && currg == 12)
+        pos = [425, 450] * 0.03;
+    end;
+    
+    if (nextg == 21 && currg == 14) || ...
+       (nextg == 14 && currg == 21)
+        
+    end;
+    
+    pos = [pos; mvnrnd(goal.pos, goal.afford)];
+end;
+
+function sample_in_between(apos, bpos, orient)
+
+xmin = min(apos(1), bpos(1));
+xmax = max(apos(1), bpos(1));
+ymin = min(apos(2), bpos(2));
+ymax = max(apos(2), bpos(2));
+
+if strcmp(orient, 'lb') % left bottom
+    p = [xmin, ymin];
+elseif strcmp(orient, 'rb') % right bottom
+    p = [xmax, ymin];
+end;
+
+

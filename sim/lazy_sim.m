@@ -33,6 +33,7 @@ Gr.attr = attrPrior.attr;
 load pixWayptrs.mat;
 sc = 0.03;
 goalPos = wayptrs * sc;
+Gr.goalPos = goalPos;
 for i = 1 : graphN
     goalList(i).pos = goalPos(i, :);
     goalList(i).afford = [0.03   0;
@@ -49,10 +50,12 @@ Gr.portals = portals;
 % - emerging timings
 agtN = 0;
 dT = 0.04;
+speed = 3.5;
 param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
+Gr.speed = speed;
 
 %% simulation
-T = 5000;
+T = 3000;
 fig = imread('scene.png');
 
 figure;
@@ -73,6 +76,9 @@ for t = 1 : T
         agtList(agtN).pref = [];
         agtList(agtN).traj = [];
         
+        if initG == 20
+        end;
+        
         agtList(agtN) = goal_select_stage(agtList(agtN), G, goalList, dT, Gr);
     end;
     
@@ -80,7 +86,7 @@ for t = 1 : T
     conf = [];
     for i = 1 : length(agtList)
         if ~strcmp(agtList(i).state, 'out')
-            conf = [conf; t, i, agtList(i).pos, agtList(i).vel, agtList(i).pref, agtList(i).goal];
+            conf = [conf; t, i, agtList(i).pos, agtList(i).vel, agtList(i).pref, agtList(i).goal(1,:)];
         end;
     end;
     
@@ -97,8 +103,8 @@ for t = 1 : T
     simRes = rvo_sim(0, conf(:, 3:end-2), param);
     simRes = reshape(simRes, 4, [])';
     conf(:, 3:6) = simRes; % update position and velocity
-    conf(:, 7:8) = (conf(:, end-1:end) - conf(:, 3:4))/dT;
-    conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.001, 0.001, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
+    conf(:, 7:8) = speed * (conf(:, end-1:end) - conf(:, 3:4))/norm(conf(:, end-1:end) - conf(:, 3:4));
+    conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.0, 0.0, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
     
     for i = 1 : size(conf, 1)
         aid = conf(i, 2);
@@ -109,16 +115,28 @@ for t = 1 : T
         plot(agtList(aid).traj(:,1)/sc, agtList(aid).traj(:,2)/sc, '-b');
         
         % check if agents reaches goal
-        if norm(agtList(aid).pos - agtList(aid).goal) < 0.3
-            %disp('reached');
-            agtList(aid).seq = [agtList(aid).seq, agtList(aid).gid];
-            
+        if norm(agtList(aid).pos - agtList(aid).goal(1,:)) < 0.8 && size(agtList(aid).goal,1) > 1
+            agtList(aid).goal = agtList(aid).goal(2:end, :);
+            agtList(aid).pref = speed * (agtList(aid).goal(1,:) - agtList(aid).pos)/...
+                                norm(agtList(aid).goal(1,:) - agtList(aid).pos);
+        elseif norm(agtList(aid).pos - agtList(aid).goal(1,:)) < 0.5 && size(agtList(aid).goal,1) == 1
+            agtList(aid).seq = [agtList(aid).seq, agtList(aid).gid];            
             plot(goalPos(agtList(aid).gid, 1)/sc, goalPos(agtList(aid).gid, 2)/sc, 'LineWidth', 2.0,...
                 'Color', [1, 0, 0], 'LineStyle', 'o');
             
             % select another goal
             agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
         end;
+%         if norm(agtList(aid).pos - agtList(aid).goal) < 0.3
+%             %disp('reached');
+%             agtList(aid).seq = [agtList(aid).seq, agtList(aid).gid];
+%             
+%             plot(goalPos(agtList(aid).gid, 1)/sc, goalPos(agtList(aid).gid, 2)/sc, 'LineWidth', 2.0,...
+%                 'Color', [1, 0, 0], 'LineStyle', 'o');
+%             
+%             % select another goal
+%             agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
+%         end;
     end;
     
     %%
@@ -137,9 +155,9 @@ if nextG == 0,
     agt.state = 'out'; 
     return; 
 end;
-agt.goal = sample_goal(goalList(nextG));
+agt.goal = sample_goal(goalList(nextG), nextG, agt.seq(end), Gr.goalPos);
 agt.gid = nextG;
-agt.pref = (agt.goal - agt.pos)/dT;
+agt.pref = Gr.speed * ((agt.goal(1,:) - agt.pos)/ norm(agt.goal(1,:) - agt.pos));
 agt.state = 'mov'; % moving stage
 
 

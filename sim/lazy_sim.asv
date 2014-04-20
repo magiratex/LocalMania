@@ -98,7 +98,7 @@ for t = 1 : T
     simRes = reshape(simRes, 4, [])';
     conf(:, 3:6) = simRes; % update position and velocity
     conf(:, 7:8) = (conf(:, end-1:end) - conf(:, 3:4))/dT;
-    conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.01, 0.01, 0.01, 0.01, 0.02, 0.02]), size(conf,1));
+    conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.001, 0.001, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
     
     for i = 1 : size(conf, 1)
         aid = conf(i, 2);
@@ -109,16 +109,19 @@ for t = 1 : T
         plot(agtList(aid).traj(:,1)/sc, agtList(aid).traj(:,2)/sc, '-b');
         
         % check if agents reaches goal
-        if norm(agtList(aid).pos - agtList(aid).goal) < 0.3
-            %disp('reached');
-            agtList(aid).seq = [agtList(aid).seq, agtList(aid).gid];
-            
-            plot(goalPos(agtList(aid).gid, 1)/sc, goalPos(agtList(aid).gid, 2)/sc, 'LineWidth', 2.0,...
-                'Color', [1, 0, 0], 'LineStyle', 'o');
-            
-            % select another goal
-            agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
+        if norm(agtList(aid).pos - agtList(aid).goal(1,:)) < 0.3 && size(agtList(aid).goal,1) > 1
+            agtList(aid).
         end;
+%         if norm(agtList(aid).pos - agtList(aid).goal) < 0.3
+%             %disp('reached');
+%             agtList(aid).seq = [agtList(aid).seq, agtList(aid).gid];
+%             
+%             plot(goalPos(agtList(aid).gid, 1)/sc, goalPos(agtList(aid).gid, 2)/sc, 'LineWidth', 2.0,...
+%                 'Color', [1, 0, 0], 'LineStyle', 'o');
+%             
+%             % select another goal
+%             agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
+%         end;
     end;
     
     %%
@@ -137,7 +140,7 @@ if nextG == 0,
     agt.state = 'out'; 
     return; 
 end;
-agt.goal = sample_goal(goalList(nextG));
+agt.goal = sample_goal(goalList(nextG), nextG, agt.seq(end));
 agt.gid = nextG;
 agt.pref = (agt.goal - agt.pos)/dT;
 agt.state = 'mov'; % moving stage

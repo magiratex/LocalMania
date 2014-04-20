@@ -6,7 +6,7 @@ fig = imread('scene.png');
 imshow(fig);
 hold on;
 
-load data2.mat;
+load data3.mat;
 cmap = 'cmgrby';
 sc = 0.03;
 for i = 1 : length(agtList)
