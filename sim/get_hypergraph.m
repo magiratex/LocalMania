@@ -21,11 +21,14 @@ for i = 1 : size(edges, 1)
     id = find(find_ind(edges(i,[2,1]), hyind) == 1);
     edgeID = [edgeID, id];
     
+    G(edges(i,1),edges(i,2)) = 1;
+    G(edges(i,2),edges(i,1)) = 1;
 end;
 
 [hyG, noedge] = refine_hypergraph(hyG, edgeID, hyind);
 % sparseG = sparse(hyG);
 
+%%
 [ei,ej] = find(hyG);
 
 fig = imread('scene.png');
@@ -70,4 +73,4 @@ for i = 1 : size(sparseRecord)
     attr(sparseRecord(i,1), sparseRecord(i,2)) = sparseRecord(i, end);
 end;
 
-save attr attr;
+% save attr attr;
