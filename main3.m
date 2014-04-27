@@ -53,7 +53,7 @@ eHat = [zeros(1, M);
 % attrPrior = (Gr.attr + 0.1) .* Gr.G;
 noisePrior = (Gr.attr + 0.1) .* Gr.G;
 attrPrior = est_attr_data(hseq, Gr);
-attrPriro = est_prior(attrPrior, noisePrior);
+attrPrior = est_prior(attrPrior, noisePrior);
 
 backup.rngSeed = rseed;
 backup.xPrior = attrPrior;
