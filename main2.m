@@ -96,15 +96,16 @@ for i = 1 : 30
     fprintf('------------ %d ------------\n', i);
     
     tic
+    [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
+    toc
+    w = wHat * 0.9 + w * 0.1
+    
+    tic
     [xHat, ~] = mOptimState(K, C/w, I, P, beta);
     toc
        
-    tic
-    [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
-    toc
-    
-%     w = wHat * 0.99 + w * 0.01
-    w = wHat
+
+%     w = wHat
 
     T = dcm_trans_prob(Gr.G, Gr.ind, w, xHat, []);
     [K, C, I, ~] = mAccessVal(T, P, Gr);
@@ -135,5 +136,5 @@ for i = 1 : 30
 end;
 
 backup.iter = iter;
-% save(['results\data_',fname,'.mat'], 'backup'); 
+save(['results\data_',fname,'.mat'], 'backup'); 
 
