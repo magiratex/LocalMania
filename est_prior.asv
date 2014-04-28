@@ -22,24 +22,4 @@ gtr = Gr.attr;
 % %     gtr(i, nonzeroind)
 % end
 
-x = [];
-y = [];
-for i = 1 : size(gtr, 1)
-    if max(gtr(i,:)) ==0, continue; end;
-    nonzeroind = gtr(i,:)~=0;
-    x = [x; max(gtr(i, nonzeroind)) - min(gtr(i, nonzeroind))];
-    y = [y; max(log(estAttr(i,nonzeroind))) - min(log(estAttr(i,nonzeroind)))];
-end
-[w, fval] = glmfit(x, y);
-w = w(end);
-for i = 1 : size(gtr, 1)
-    if max(gtr(i,:)) ==0, continue; end;
-    nonzeroind = gtr(i,:)~=0;
-    Z = w * min(gtr(i, nonzeroind)) - min(log(estAttr(i,nonzeroind)));
-%     estAttr(i, nonzeroind)
-    estAttr(i,nonzeroind) = (log(estAttr(i,nonzeroind)) + Z) ./ w;
-%     estAttr(i, nonzeroind)
-%     gtr(i, nonzeroind)
-end
-
-end
+for i = 1 : 

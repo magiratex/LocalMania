@@ -1,0 +1,30 @@
+function xval = est_prior(x, xhat)
+
+% f = @(K) sum(sum((K(1) * log(bsxfun(@times, x, K(2:end))) - xhat).^2));
+% f = @(K) sum(sum((K(1) * create_log_mat(bsxfun(@times, x, K(2:end))) - xhat).^2));
+% xval = K(1) * create_log_mat(bsxfun(@times, x, K(2:end)));
+
+options = optimoptions('fminunc','Display', 'off', 'TolFun', 1e-4);
+[K, fval] = fminunc(f, ones(size(x,1)+1, 1), options);
+
+while 1
+    
+end;
+
+
+%%
+% function mat = create_log_mat(mat)
+% 
+% mat = log(mat);
+% mat(mat == -inf) = 0;
+
+
+%% given x and estimate K
+function K = f1(x, xhat)
+
+f = @(K) sum(sum((bsxfun(@times, x, x) - x0).^2));
+options = optimoptions('fminunc','Display', 'off', 'TolFun', 1e-4);
+[K, fval] = fminunc(f, ones(size(x,1), 1), options);
+
+%% given K and estimate x
+function f2()

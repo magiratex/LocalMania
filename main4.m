@@ -29,7 +29,7 @@ Gr = init_graph(sizeG, edgeN, gtW);
 
 
 %% generate sequences
-[seq, hseq, Gr] = generate_data(Gr, nsample, true, d);
+[seq, hseq, Gr] = generate_data(Gr, nsample, false);
 
 
 M = size(Gr.G, 1);
@@ -43,14 +43,16 @@ M = size(Gr.G, 1);
 % gplot(Gr.G, coordinates);
 
 MMin = 1e-5;
-beta = 0.5;
+beta = 0.01;
 eHat = [zeros(1, M); 
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
 % attrPrior = max((Gr.attr + rand(M)*0.1), 0) .* Gr.G;
 % attrPrior = (Gr.attr + rand(M)*d) .* Gr.G;
-attrPrior = Gr.attr;
+% attrPrior = Gr.attr;
 % attrPrior = (Gr.attr + 0.1) .* Gr.G;
+attrPrior = est_attr_data(hseq, Gr);
+attrPrior = est_prior(attrPrior, Gr);
 
 backup.rngSeed = rseed;
 backup.xPrior = attrPrior;
@@ -92,16 +94,23 @@ toc
 xHat = P;
 
 pE = -1;
+pW = -1;
 flag = false;
 for i = 1 : 30
     fprintf('------------ %d ------------\n', i);
+    
     tic
     [wHat, ~] = mOptimWeight(xHat, K, C, I, w);
     toc
+    w = wHat * 0.9 + w * 0.1
     
-    w = wHat * 0.99 + w * 0.01
+    tic
+    [xHat, ~] = mOptimState(K, C/w, I, P, beta);
+    toc
+       
+
 %     w = wHat
-    
+
     T = dcm_trans_prob(Gr.G, Gr.ind, w, xHat, []);
     [K, C, I, ~] = mAccessVal(T, P, Gr);
     
@@ -115,6 +124,9 @@ for i = 1 : 30
     if abs(E - pE) > 1e-3
         pE = E;
         flag = false;
+%     if abs(w - pW) > 1e-3
+%         pW = w;
+%         flag = false;
     else
         if flag, break; end;
         

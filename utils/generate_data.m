@@ -31,6 +31,7 @@ if tnoise
     d = varargin{1};
     disp(['Noise level: --- ', num2str(d)]);
     T = (T + rand(size(T))*d) .* Gr.G;
+%     T = T;
     for i = 1 : size(T, 1)
         if sum(T(i, :))
             T(i, :) = T(i, :) ./ sum(T(i, :));

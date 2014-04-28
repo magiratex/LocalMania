@@ -43,7 +43,7 @@ M = size(Gr.G, 1);
 % gplot(Gr.G, coordinates);
 
 MMin = 1e-5;
-beta = 0.01;
+beta = 0.1;
 eHat = [zeros(1, M); 
         diag(ones(1, M))];    
 % eHat = [diag(ones(1, M))];
@@ -54,7 +54,7 @@ eHat = [zeros(1, M);
 % noisePrior = (Gr.attr + 0.1) .* Gr.G;
 % attrPrior = est_attr_data(hseq, Gr);
 % attrPrior = est_prior4(attrPrior, noisePrior, Gr);
-attrPrior = bsxfun(@plus, Gr.attr, rand(M,1)*d) .* Gr.G;
+rand(M,1)
 
 backup.rngSeed = rseed;
 backup.xPrior = attrPrior;
