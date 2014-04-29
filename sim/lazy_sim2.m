@@ -1,6 +1,6 @@
 %% simulation of tradeshow
 
-function lazy_sim
+function lazy_sim2
 
 addpath('..\utils\');
 clc; close all;
@@ -39,7 +39,7 @@ for i = 1 : graphN
     goalList(i).afford = [0.03   0;
                           0     0.03];
     goalList(i).n = 0;
-    goalList(i).nMax = 100;
+    goalList(i).nMax = 10;
 end;
 
 load portals.mat;
@@ -54,6 +54,7 @@ speed = 3.5;
 param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
 Gr.speed = speed;
 displayMode = 'off';
+statGoals = [];
 
 %% simulation
 T = 3000;
@@ -67,6 +68,7 @@ for t = 1 : T
         disp(t);
     end;
     %% new agent
+%     fprintf('new agent born!\n');
     %if t == 1 || t == 50 || t == 100   % or any new-agent condition
     if mod(t, 10) == 1
         agtN = agtN + 1;
@@ -80,6 +82,7 @@ for t = 1 : T
         agtList(agtN).gid = initG;
         agtList(agtN).pref = [];
         agtList(agtN).traj = [];
+        agtList(agtN).stay = 0;
         
         if initG == 20
         end;
@@ -88,10 +91,23 @@ for t = 1 : T
     end;
     
     %% rvo updates
+%     fprintf('rvo state sets up!\n');
     conf = [];
     for i = 1 : length(agtList)
-        if ~strcmp(agtList(i).state, 'out')
+        if ~strcmp(agtList(i).state, 'out') && ~strcmp(agtList(i).state, 'stay')
             conf = [conf; t, i, agtList(i).pos, agtList(i).vel, agtList(i).pref, agtList(i).goal(1,:)];
+        end;
+        
+        if strcmp(agtList(i).state, 'stay') % not put into the goal
+            agtList(i).stay = agtList(i).stay - 1;
+            if agtList(i).stay <= 0
+                goalList(agtList(i).gid).n = goalList(agtList(i).gid).n - 1;
+                if goalList(agtList(i).gid).n < 0
+                    disp('SOMETHING WRONG!');
+                end;
+                % select another goal
+                agtList(i) = goal_select_stage(agtList(i), G, goalList, dT, Gr);
+            end;
         end;
     end;
     
@@ -104,12 +120,15 @@ for t = 1 : T
     end;
     
     %% update agents
+%     fprintf('rvo updating!\n');
     simRes = rvo_sim(0, conf(:, 3:end-2), param);
     simRes = reshape(simRes, 4, [])';
     conf(:, 3:6) = simRes; % update position and velocity
     conf(:, 7:8) = speed * (conf(:, end-1:end) - conf(:, 3:4))/norm(conf(:, end-1:end) - conf(:, 3:4));
     conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.0, 0.0, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
     
+    %% check agent state
+%     fprintf('check agent state!\n');
     for i = 1 : size(conf, 1)
         aid = conf(i, 2);
         agtList(aid).pos = conf(i, 3:4);
@@ -128,26 +147,30 @@ for t = 1 : T
                                 norm(agtList(aid).goal(1,:) - agtList(aid).pos);
                             
         elseif norm(agtList(aid).pos - agtList(aid).goal(1,:)) < 0.5 && size(agtList(aid).goal,1) == 1
+            % reach booth
             agtList(aid).seq = [agtList(aid).seq, agtList(aid).gid];    
             if strcmp(displayMode, 'on')
                 plot(goalPos(agtList(aid).gid, 1)/sc, goalPos(agtList(aid).gid, 2)/sc, 'LineWidth', 2.0,...
                     'Color', [1, 0, 0], 'LineStyle', 'o');
             end;
             
-            % select another goal
-            agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
+            % reach any portal
+            if length(agtList(aid).seq) > 1
+                if any(portals == agtList(aid).seq(end))
+                    agtList(aid).state = 'out';
+                    continue;
+                end;
+            end;
+            
+            % otherwise
+            agtList(aid).state = 'stay';
+            agtList(aid).stay = int32(rand(1) * 300 + 100);
+            goalList(agtList(aid).gid).n = goalList(agtList(aid).gid).n + 1;
         end;
-%         if norm(agtList(aid).pos - agtList(aid).goal) < 0.3
-%             %disp('reached');
-%             agtList(aid).seq = [agtList(aid).seq, agtList(aid).gid];
-%             
-%             plot(goalPos(agtList(aid).gid, 1)/sc, goalPos(agtList(aid).gid, 2)/sc, 'LineWidth', 2.0,...
-%                 'Color', [1, 0, 0], 'LineStyle', 'o');
-%             
-%             % select another goal
-%             agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
-%         end;
     end;
+    
+    %%
+    statGoals = [statGoals; [goalList(:).n]];
     
     %%
     
@@ -156,10 +179,13 @@ for t = 1 : T
 end;
 
 save data agtList;
+save stat statGoals;
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 
+% fprintf('goal selecting!\n');
 agt.state = 'gs'; % goal selection stage
+% nextG = goal_select(G, agt, Gr, goalList);
 nextG = goal_select(G, agt, Gr);
 if nextG == 0, 
     agt.state = 'out'; 
