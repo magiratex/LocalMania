@@ -55,7 +55,6 @@ param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
 Gr.speed = speed;
 displayMode = 'off';
 statGoals = [];
-statFPS = [];
 
 %% simulation
 T = 3000;
@@ -178,16 +177,14 @@ for t = 1 : T
     if strcmp(displayMode, 'on')
         pause(dT);
         hold off;
-        statFPS = [statFPS; size(conf,1), (cputime - checkTime)];
     else
-        statFPS = [statFPS; size(conf,1), (cputime - checkTime)];
-        %fprintf('The number of agents: %d; %.3f\n',size(conf,1), (cputime - checkTime))
+        list =
+        fprintf('The number of agents: %d; %.3f\n',size(conf,1), (cputime - checkTime))
     end;
 end;
 
-% save data agtList;
-% save stat statGoals;
-save statFPS statFPS;
+save data agtList;
+save stat statGoals;
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 

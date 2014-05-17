@@ -6,8 +6,8 @@ fig = imread('scene.png');
 % fig = imread('scene-label.png');
 
 
-load data4.mat;
-% load data-rnd3.mat;
+% load data4.mat;
+load data-rnd3.mat;
 cmap = 'cmgrby';
 sc = 0.03;
 
@@ -89,11 +89,13 @@ fig = imread('scene.png');
 
 imshow(fig);
 hold on;
-load data4.mat;
+% load data4.mat;
+load data-rnd3.mat;
 cmap = 'cgmrby';
 sc = 0.03;
 % for i = [33,52,61]
-for i = [33, 34]
+% for i = [33, 34]
+for i = [7, 26,  33]
     plot(agtList(i).traj(1,1)/sc, agtList(i).traj(1,2)/sc, ['o',cmap(mod(i,6)+1)], ...
         'LineSmooth', 'on', 'LineWidth', 2.0);
     plot(agtList(i).traj(:,1)/sc, agtList(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], ...
