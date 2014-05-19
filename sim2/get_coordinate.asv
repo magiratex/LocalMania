@@ -102,14 +102,10 @@ for i = 1 : size(edges, 1)
          [wayptrs(I,2), wayptrs(J,2)], '-b');
 end;
 
-%% indicate the portals
+% indicate the portals
 portals = [];
 while 1
     [x,y] = ginput(1);
-    i = find_min_id(x(1),y(1),wayptrs)
-    portals = [portals, i];
-    str = input('finish? (y)', 's');
-    if str == 'y'
-        break;
-    end;
+    i = find_min_id(x(1),y(1),wayptrs);
+    
 end;

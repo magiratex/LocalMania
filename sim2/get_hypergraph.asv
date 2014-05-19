@@ -11,7 +11,7 @@ sizeG = size(wayptrs, 1);
 load edges_Campus1.mat;
 G = zeros(sizeG);
 
-load portals_Campus1.mat;
+load portals_Campus.mat;
 
 [hyG, hyind] = construct_hypergraph(sizeG);
 
@@ -73,10 +73,10 @@ for i = 1 : size(ei, 1)
     if e1 == 1
         val = -1.5;
         sparseRecord = [sparseRecord; ei(i), ej(i), e0, e1, e2, val];
-%         fprintf('e0: %d ---> e1: %d ---> e2: %d\n', e0, e1, e2);
-%         fprintf('also fill in e2: %d ---> e1: %d ---> e0: %d\n', e2, e1, e0);
-        I1 = find(find_ind([e2,e1], hyind));
-        I2 = find(find_ind([e1,e0], hyind));
+        fprintf('e0: %d ---> e1: %d ---> e2: %d\n', e0, e1, e2);
+        fprintf('also fill in e2: %d ---> e1: %d ---> e0: %d\n', e2, e1, e0);
+        I1 = find_ind([e2,e1], hyind);
+        I2 = find_ind([e1,e0], hyind);
         sparseRecord = [sparseRecord; I1, I2, e2, e1, e0, val];
         hold off;
         continue;
@@ -85,7 +85,9 @@ for i = 1 : size(ei, 1)
     if e0 == e2 % return behavior
         val = -1.0;
         sparseRecord = [sparseRecord; ei(i), ej(i), e0, e1, e2, val];
-%         fprintf('e0: %d ---> e1: %d ---> e2: %d\n', e0, e1, e2);
+        sparseRecord = [sparseRecord; ej(i), ei(i), e2, e1, e0, val];
+        fprintf('e0: %d ---> e1: %d ---> e2: %d\n', e0, e1, e2);
+        fprintf('also fill in e2: %d ---> e1: %d ---> e0: %d\n', e2, e1, e0);
         hold off;
         continue;
     end;
@@ -103,10 +105,9 @@ for i = 1 : size(ei, 1)
     val = input('attr: ');
     
     sparseRecord = [sparseRecord; ei(i), ej(i), e0, e1, e2, val];
-    fprintf('also fill in e2: %d ---> e1: %d ---> e0: %d\n~~~~~~~~~\n', e2, e1, e0);
-    I1 = find(find_ind([e2,e1], hyind));
-    I2 = find(find_ind([e1,e0], hyind));
-    sparseRecord = [sparseRecord; I1, I2, e2, e1, e0, val];
+    sparseRecord = [sparseRecord; ej(i), ei(i), e2, e1, e0, val];
+    fprintf('also fill in e2: %d ---> e1: %d ---> e0: %d\n', e2, e1, e0);
+    %attr(ei, ej) = val;
     hold off;
 end;
 
