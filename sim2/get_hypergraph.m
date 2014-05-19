@@ -8,10 +8,10 @@ load pixWayptrs_Campus.mat;
 sizeG = size(wayptrs, 1);
 
 % load edges.mat;
-load edges_Campus1.mat;
+load edges_Campus1+2.mat;
 G = zeros(sizeG);
 
-load portals_Campus1.mat;
+load portals_Campus1+2.mat;
 
 [hyG, hyind] = construct_hypergraph(sizeG);
 
@@ -36,6 +36,10 @@ end;
 % fig = imread('scene.png');
 fig = imread('map2.png');
 attr = zeros(size(hyG));
+%% load previous data
+load attr_Campus1.mat;
+
+%%
 sparseRecord = [];
 
 
@@ -61,6 +65,13 @@ for i = 1 : size(ei, 1)
     e1 = hyind(ej(i), 1); e2 = hyind(ej(i), 2);
     
     %% special conditions (limited in this map!)
+    I1 = find(find_ind([e0,e1], hyind));
+    I2 = find(find_ind([e1,e2], hyind));
+    if attr(I1,I2)~=0
+        hold off;
+        continue;
+    end;
+    
     if ~isempty(sparseRecord)
         existSame = arrayfun(@(k) sparseRecord(k,1)==ei(i) && sparseRecord(k,2)==ej(i), ...
                       1:size(sparseRecord, 1));

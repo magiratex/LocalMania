@@ -75,7 +75,7 @@ while 1
     
 end;
 
-save edges_Campus edges;
+save edges_Campus2 edges;
 
 %% show edges
 clc;
@@ -94,7 +94,7 @@ for i = 1 : size(wayptrs, 1)
     text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
 end;
 
-load edges_Campus1.mat;
+load edges_Campus1+2.mat;
 for i = 1 : size(edges, 1)
     I = edges(i,1);
     J = edges(i,2);

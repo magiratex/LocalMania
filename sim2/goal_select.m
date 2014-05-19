@@ -67,7 +67,7 @@ if strcmp(agt.state, 'gs')
         end;
         
         
-        selectID = randsample(length(vind), 1, true, prob);
+        selectID = randsample(length(prob), 1, true, prob);
         if ~isempty(isPortal) && selectID == length(prob) % choose to leave
             gid = 0;
             return;

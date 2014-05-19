@@ -14,13 +14,13 @@ clc; close all;
 % G(3,4) = 1; G(4,3) = 1;
 % G(3,5) = 1; G(5,3) = 1;
 % G(4,5) = 1; G(5,4) = 1;
-load graphInfo_Campus1.mat;
+load graphInfo_Campus1+2.mat;
 graphN = size(Gr.origG, 1);
 G = Gr.origG;
 hypG = Gr.G;
 ind = Gr.hypind;
 
-load attr_Campus1.mat;
+load attr_Campus1+2.mat;
 Gr.attr = attr;
 
 
@@ -42,12 +42,14 @@ for i = 1 : graphN
     goalList(i).nMax = 10;
 end;
 
-load edges_Campus1.mat;
+load edges_Campus1+2.mat;
 Gr.edges = edges;
 Gr.edges(:,3:4) = sc * Gr.edges(:,3:4);
 
-load portals_Campus1.mat;
+load portals_Campus1+2.mat;
 Gr.portals = portals;
+
+load virtualgoals_Campus.mat;
 
 % load other simulation info:
 % - rvo parameters
@@ -90,9 +92,6 @@ for t = 1 : T
         agtList(agtN).traj = [];
         agtList(agtN).stay = 0;
         
-        if initG == 20
-        end;
-        
         agtList(agtN) = goal_select_stage(agtList(agtN), G, goalList, dT, Gr);
     end;
     
@@ -122,16 +121,20 @@ for t = 1 : T
         imshow(fig);
         hold on;
         plot(goalPos(:, 1)/sc, goalPos(:, 2)/sc, 'Or');
-        plot(conf(:, 3)/sc, conf(:, 4)/sc, 'ob');
+        if ~isempty(conf)
+            plot(conf(:, 3)/sc, conf(:, 4)/sc, 'ob');
+        end;
     end;
     
     %% update agents
 %     fprintf('rvo updating!\n');
-    simRes = rvo_sim(0, conf(:, 3:end-2), param);
-    simRes = reshape(simRes, 4, [])';
-    conf(:, 3:6) = simRes; % update position and velocity
-    conf(:, 7:8) = speed * (conf(:, end-1:end) - conf(:, 3:4))/norm(conf(:, end-1:end) - conf(:, 3:4));
-    conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.0, 0.0, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
+    if ~isempty(conf)
+        simRes = rvo_sim(0, conf(:, 3:end-2), param);
+        simRes = reshape(simRes, 4, [])';
+        conf(:, 3:6) = simRes; % update position and velocity
+        conf(:, 7:8) = speed * (conf(:, end-1:end) - conf(:, 3:4))/norm(conf(:, end-1:end) - conf(:, 3:4));
+        conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.0, 0.0, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
+    end;
     
     %% check agent state
 %     fprintf('check agent state!\n');
@@ -167,8 +170,13 @@ for t = 1 : T
 %                     continue;
 %                 end;
 %             end;
+            if strcmp(agtList(aid).state, 'out')
+                continue;
+            end;
             
             % otherwise
+            if any(virtGoals) == 
+            end;
             agtList(aid).state = 'stay';
             agtList(aid).stay = int32(rand(1) * 300 + 100);
             goalList(agtList(aid).gid).n = goalList(agtList(aid).gid).n + 1;

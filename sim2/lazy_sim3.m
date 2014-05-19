@@ -14,13 +14,13 @@ clc; close all;
 % G(3,4) = 1; G(4,3) = 1;
 % G(3,5) = 1; G(5,3) = 1;
 % G(4,5) = 1; G(5,4) = 1;
-load graphInfo_Campus1.mat;
+load graphInfo_Campus1+2.mat;
 graphN = size(Gr.origG, 1);
 G = Gr.origG;
 hypG = Gr.G;
 ind = Gr.hypind;
 
-load attr_Campus1.mat;
+load attr_Campus1+2.mat;
 Gr.attr = attr;
 
 
@@ -42,12 +42,14 @@ for i = 1 : graphN
     goalList(i).nMax = 10;
 end;
 
-load edges_Campus1.mat;
+load edges_Campus1+2.mat;
 Gr.edges = edges;
 Gr.edges(:,3:4) = sc * Gr.edges(:,3:4);
 
-load portals_Campus1.mat;
+load portals_Campus1+2.mat;
 Gr.portals = portals;
+
+load virtualgoals_Campus.mat;
 
 % load other simulation info:
 % - rvo parameters
@@ -57,7 +59,7 @@ dT = 0.04;
 speed = 3.5;
 param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
 Gr.speed = speed;
-displayMode = 'on';
+displayMode = 'off';
 statGoals = [];
 statFPS = [];
 
@@ -75,10 +77,11 @@ for t = 1 : T
     end;
     %% new agent
 %     fprintf('new agent born!\n');
-    if t == 1 || t == 50 || t == 100   % or any new-agent condition
-%     if mod(t, 10) == 1
+%     if t == 1 || t == 50 || t == 100   % or any new-agent condition
+    if mod(t, 10) == 1
         agtN = agtN + 1;
-        initG = randi(length(portals));
+        initG = randsample(size(portals,2), 1, true, portals(2,:)/sum(portals(2,:)));
+        %initG = randi(length(portals));
         initG = portals(1,initG);
         agtList(agtN).seq = initG;  % initial goal
         agtList(agtN).pos = sample_goal(goalList(initG)); %mvnrnd(goalPos, goalList(initG).afford);
@@ -96,12 +99,14 @@ for t = 1 : T
     %% rvo updates
 %     fprintf('rvo state sets up!\n');
     conf = [];
+    stayList = [];
     for i = 1 : length(agtList)
         if ~strcmp(agtList(i).state, 'out') && ~strcmp(agtList(i).state, 'stay')
             conf = [conf; t, i, agtList(i).pos, agtList(i).vel, agtList(i).pref, agtList(i).goal(1,:)];
         end;
         
         if strcmp(agtList(i).state, 'stay') % not put into the goal
+            stayList = [stayList; agtList(i).pos];
             agtList(i).stay = agtList(i).stay - 1;
             if agtList(i).stay <= 0
                 goalList(agtList(i).gid).n = goalList(agtList(i).gid).n - 1;
@@ -119,16 +124,23 @@ for t = 1 : T
         imshow(fig);
         hold on;
         plot(goalPos(:, 1)/sc, goalPos(:, 2)/sc, 'Or');
-        plot(conf(:, 3)/sc, conf(:, 4)/sc, 'ob');
+        if ~isempty(conf)
+            plot(conf(:, 3)/sc, conf(:, 4)/sc, 'ob');
+        end;
+        if ~isempty(stayList)
+            plot(stayList(:, 1)/sc, stayList(:,2)/sc, 'oc');
+        end;
     end;
     
     %% update agents
 %     fprintf('rvo updating!\n');
-    simRes = rvo_sim(0, conf(:, 3:end-2), param);
-    simRes = reshape(simRes, 4, [])';
-    conf(:, 3:6) = simRes; % update position and velocity
-    conf(:, 7:8) = speed * (conf(:, end-1:end) - conf(:, 3:4))/norm(conf(:, end-1:end) - conf(:, 3:4));
-    conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.0, 0.0, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
+    if ~isempty(conf)
+        simRes = rvo_sim(0, conf(:, 3:end-2), param);
+        simRes = reshape(simRes, 4, [])';
+        conf(:, 3:6) = simRes; % update position and velocity
+        conf(:, 7:8) = speed * (conf(:, end-1:end) - conf(:, 3:4))/norm(conf(:, end-1:end) - conf(:, 3:4));
+        conf(:, 3:8) = conf(:, 3:8) + mvnrnd(zeros(1,6), diag([0.0, 0.0, 0.001, 0.001, 0.002, 0.002]), size(conf,1));
+    end;
     
     %% check agent state
 %     fprintf('check agent state!\n');
@@ -169,9 +181,14 @@ for t = 1 : T
             end;
             
             % otherwise
-            agtList(aid).state = 'stay';
-            agtList(aid).stay = int32(rand(1) * 300 + 100);
-            goalList(agtList(aid).gid).n = goalList(agtList(aid).gid).n + 1;
+            if ~max(virtGoals == agtList(aid).gid)
+                agtList(aid).state = 'stay';
+                %agtList(aid).stay = int32(rand(1) * 300 + 100);
+                agtList(aid).stay = int32(rand(1) * 10);
+                goalList(agtList(aid).gid).n = goalList(agtList(aid).gid).n + 1;
+            else
+                agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
+            end;
         end;
     end;
     
@@ -189,7 +206,7 @@ for t = 1 : T
     end;
 end;
 
-% save data agtList;
+save data_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
 
