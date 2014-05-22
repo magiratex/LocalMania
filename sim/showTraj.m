@@ -10,7 +10,8 @@ fig = fig2;
 
 
 % load data4.mat;
-load data6.mat;
+% load data6.mat;
+load data_sf_rnd_tradeshow.mat;
 % load data-rnd3.mat;
 cmap = 'cmgrby';
 sc = 0.03;

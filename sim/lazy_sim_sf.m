@@ -5,6 +5,8 @@ function lazy_sim_sf
 addpath('..\utils\');
 clc; close all;
 
+global goalSelectType;
+
 %% configuration
 % load graph info
 % graphN = 5;
@@ -54,10 +56,10 @@ speed = 3.5;
 param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
 groupSFParam = [500, 0.1, 0.5, 120000, 240000];
 Gr.speed = speed;
-displayMode = 'on';
+displayMode = 'off';
 
 %% simulation
-T = 4000;
+T = 6000;
 fig = imread('scene.png');
 
 if strcmp(displayMode, 'on')
@@ -156,10 +158,13 @@ for t = 1 : T
     %%
     
     pause(dT);
-    hold off;
+    if strcmp(displayMode, 'on')
+        hold off;
+    end;
 end;
 
-save data agtList;
+save(['data_sf_',goalSelectType,'_tradeshow.mat'], 'agtList');
+% save data agtList;
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 
