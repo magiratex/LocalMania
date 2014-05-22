@@ -2,21 +2,27 @@ clear;
 clc;
 close all;
 
-fig = imread('scene.png');
+origfig = imread('scene.png');
+fig = imread('map4.png');
+fig2 = imresize(fig, .88);
+fig = fig2;
 % fig = imread('scene-label.png');
 
 
 % load data4.mat;
-load data-rnd3.mat;
+load data6.mat;
+% load data-rnd3.mat;
 cmap = 'cmgrby';
 sc = 0.03;
 
-% imshow(fig);
-% hold on;
-% for i = 1 : length(agtList)
-%     plot(agtList(i).traj(:,1)/sc, agtList(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
-% end;
+imshow(fig);
+hold on;
+for i = 1 : length(agtList)
+    plot(agtList(i).traj(:,1)/sc, agtList(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
+end;
 
+
+%%
 for i = 1 : length(agtList)
     imshow(fig);
     hold on;

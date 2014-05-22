@@ -185,9 +185,9 @@ for t = 1 : T
     end;
 end;
 
-% save data agtList;
+save data agtList;
 % save stat statGoals;
-save statFPS statFPS;
+% save statFPS statFPS;
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 

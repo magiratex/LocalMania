@@ -2,30 +2,36 @@ clear;
 clc;
 close all;
 
-fig = imread('map2.png');
+fig = imread('map4.png');
+fig2 = imresize(fig, .95);
+fig = fig2;
 
 
 % load data4.mat;
-load data_Campus2.mat;
+load data_norep_Campus.mat;
 cmap = 'cmgrby';
 sc = 0.1;
 
 imshow(fig);
 hold on;
 for i = 1 : length(agtList)
-    plot(agtList(i).traj(:,1)/sc, agtList(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
+    if ~isempty(agtList(i).traj)
+        plot(agtList(i).traj(:,1)/sc, agtList(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
+    end;
 end;
 
 %%
 for i = 1 : length(agtList)
     imshow(fig);
     hold on;
-    plot(agtList(i).traj(:,1)/sc, agtList(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
-    plot(agtList(i).traj(1,1)/sc, agtList(i).traj(1,2)/sc, ['o',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
+    if ~isempty(agtList(i).traj)
+        plot(agtList(i).traj(:,1)/sc, agtList(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
+        plot(agtList(i).traj(1,1)/sc, agtList(i).traj(1,2)/sc, ['o',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
+    end;
     hold off;
     disp(i);
-    %pause;
-    v(i) = input('input scores: ');
+    pause;
+    %v(i) = input('input scores: ');
 end;
 save score_dcm_Campus1 v;
 

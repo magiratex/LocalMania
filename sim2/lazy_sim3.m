@@ -36,8 +36,8 @@ goalPos = wayptrs * sc;
 Gr.goalPos = goalPos;
 for i = 1 : graphN
     goalList(i).pos = goalPos(i, :);
-    goalList(i).afford = [0.1   0;
-                          0     0.1];
+    goalList(i).afford = [0.2   0;
+                          0     0.2];
     goalList(i).n = 0;
     goalList(i).nMax = 10;
 end;
@@ -56,7 +56,7 @@ load virtualgoals_Campus.mat;
 % - emerging timings
 agtN = 0;
 dT = 0.04;
-speed = 3.5;
+speed = 4.5;
 param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
 Gr.speed = speed;
 displayMode = 'off';
@@ -206,7 +206,7 @@ for t = 1 : T
     end;
 end;
 
-save data_Campus agtList;
+save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
 

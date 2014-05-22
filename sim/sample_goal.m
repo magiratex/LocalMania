@@ -15,6 +15,26 @@ else
         pos = sample_in_between(goalpos(8,:), goalpos(12,:),'rb');
     end;
     
+    if (nextg == 13 && currg == 8) || ...
+       (nextg == 8 && currg == 13)
+        pos = sample_in_between(goalpos(8,:), goalpos(13,:),'rt');
+    end;
+    
+    if (nextg == 13 && currg == 16) || ...
+       (nextg == 16 && currg == 13)
+        pos = sample_in_between(goalpos(16,:), goalpos(13,:),'lt');
+    end;
+    
+    if (nextg == 14 && currg == 16) || ...
+       (nextg == 16 && currg == 14)
+        pos = sample_in_between(goalpos(16,:), goalpos(14,:),'rb');
+    end;
+    
+    if (nextg == 15 && currg == 16) || ...
+       (nextg == 16 && currg == 15)
+        pos = sample_in_between(goalpos(16,:), goalpos(15,:),'rt');
+    end;
+    
     if (nextg == 21 && currg == 14) || ...
        (nextg == 14 && currg == 21)
         pos = sample_in_between(goalpos(14,:), goalpos(21,:),'lt');
