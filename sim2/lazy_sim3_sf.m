@@ -210,7 +210,7 @@ for t = 1 : T
     end;
 end;
 
-save data_sf_rnd agtList;
+save data_sf_norep agtList;
 % save stat statGoals;
 % save statFPS statFPS;
 

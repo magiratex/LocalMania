@@ -15,35 +15,35 @@ if strcmp(agt.state, 'gs')
 %     end;
     %% random-0 rep
     
-    isPortal = find(Gr.portals(1,:) == agt.seq(end));
-    if ~isempty(isPortal) && length(agt.seq)>1
-        connected = find(G(agt.gid, :) == 1);
-        connected = [connected, 0];
-        gid = randi(length(connected)); % naive model
-        gid = connected(gid);
-    else
-        connected = find(G(agt.gid, :) == 1);
-        gid = randi(length(connected)); % naive model
-        gid = connected(gid);
-    end;
+%     isPortal = find(Gr.portals(1,:) == agt.seq(end));
+%     if ~isempty(isPortal) && length(agt.seq)>1
+%         connected = find(G(agt.gid, :) == 1);
+%         connected = [connected, 0];
+%         gid = randi(length(connected)); % naive model
+%         gid = connected(gid);
+%     else
+%         connected = find(G(agt.gid, :) == 1);
+%         gid = randi(length(connected)); % naive model
+%         gid = connected(gid);
+%     end;
     
     
     %% random-1 no-repi
-%     connected = find(G(agt.gid, :) == 1);
-%     isPortal = find(Gr.portals(1,:) == agt.seq(end));
-%     if ~isempty(isPortal) && length(agt.seq)>1    
-%         connected = [connected, 0];
-%     end;
-%     while 1
-%         gid = randi(length(connected)); % naive model
-%         gid = connected(gid);
-%         if gid ~= agt.seq(end) && length(agt.seq)==1
-%             break;
-%         end;
-%         if length(agt.seq)>1 && gid ~= agt.seq(end-1) && gid ~= agt.seq(end)
-%             break;
-%         end;
-%     end;
+    connected = find(G(agt.gid, :) == 1);
+    isPortal = find(Gr.portals(1,:) == agt.seq(end));
+    if ~isempty(isPortal) && length(agt.seq)>1    
+        connected = [connected, 0];
+    end;
+    while 1
+        gid = randi(length(connected)); % naive model
+        gid = connected(gid);
+        if gid ~= agt.seq(end) && length(agt.seq)==1
+            break;
+        end;
+        if length(agt.seq)>1 && gid ~= agt.seq(end-1) && gid ~= agt.seq(end)
+            break;
+        end;
+    end;
     
     %% dcm
 %     if length(agt.seq) <= 1
