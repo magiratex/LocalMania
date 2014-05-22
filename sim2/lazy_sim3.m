@@ -64,7 +64,7 @@ statGoals = [];
 statFPS = [];
 
 %% simulation
-T = 3000;
+T = 6000;
 fig = imread('map2.png');
 
 if strcmp(displayMode, 'on')

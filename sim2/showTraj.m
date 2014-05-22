@@ -6,7 +6,7 @@ fig = imread('map2.png');
 
 
 % load data4.mat;
-load data_Campus.mat;
+load data_Campus2.mat;
 cmap = 'cmgrby';
 sc = 0.1;
 
@@ -24,10 +24,10 @@ for i = 1 : length(agtList)
     plot(agtList(i).traj(1,1)/sc, agtList(i).traj(1,2)/sc, ['o',cmap(mod(i,6)+1)], 'LineSmooth', 'on');
     hold off;
     disp(i);
-    pause;
-    %v(i) = input('input scores: ');
+    %pause;
+    v(i) = input('input scores: ');
 end;
-% save score_rnd v;
+save score_dcm_Campus1 v;
 
 %%
 clc;
