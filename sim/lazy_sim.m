@@ -5,6 +5,8 @@ function lazy_sim
 addpath('..\utils\');
 clc; close all;
 
+global goalSelectType;
+
 %% configuration
 % load graph info
 % graphN = 5;
@@ -56,7 +58,7 @@ Gr.speed = speed;
 displayMode = 'off';
 
 %% simulation
-T = 4000;
+T = 6000;
 fig = imread('scene.png');
 
 if strcmp(displayMode, 'on')
@@ -152,10 +154,13 @@ for t = 1 : T
     %%
     
     pause(dT);
-    hold off;
+    if strcmp(displayMode, 'on')
+        hold off;
+    end;
 end;
 
-save data agtList;
+save(['data_rvo_',goalSelectType,'_tradeshow.mat'], 'agtList');
+% save data agtList;
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 

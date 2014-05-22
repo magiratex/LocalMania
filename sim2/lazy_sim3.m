@@ -5,6 +5,8 @@ function lazy_sim3
 addpath('..\utils\');
 clc; close all;
 
+global goalSelectType;
+
 %% configuration
 % load graph info
 % graphN = 5;
@@ -206,7 +208,8 @@ for t = 1 : T
     end;
 end;
 
-save data_norep_Campus agtList;
+save(['data_rvo_',goalSelectType,'_Campus.mat'], 'agtList');
+% save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
 

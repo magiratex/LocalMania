@@ -8,7 +8,8 @@ fig = fig2;
 
 
 % load data4.mat;
-load data_norep_Campus.mat;
+% load data_norep_Campus.mat;
+load data_sf_norep.mat;
 cmap = 'cmgrby';
 sc = 0.1;
 
