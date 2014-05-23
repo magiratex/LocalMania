@@ -59,7 +59,7 @@ Gr.speed = speed;
 displayMode = 'off';
 
 %% simulation
-T = 6000;
+T = 4000;
 fig = imread('scene.png');
 
 if strcmp(displayMode, 'on')
