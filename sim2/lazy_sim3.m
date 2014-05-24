@@ -206,12 +206,16 @@ for t = 1 : T
         statFPS = [statFPS; size(conf,1), (cputime - checkTime)];
         %fprintf('The number of agents: %d; %.3f\n',size(conf,1), (cputime - checkTime))
     end;
+    
+    frameInfo(t).moving = conf;
+    frameInfo(t).staying = stayList;
 end;
 
 save(['data_rvo_',goalSelectType,'_Campus.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
+save('frameInfo_rvo_dcm_Campus.mat', 'frameInfo');
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 
