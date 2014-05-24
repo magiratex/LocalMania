@@ -66,7 +66,7 @@ statGoals = [];
 statFPS = [];
 
 %% simulation
-T = 6000;
+T = 4000;
 fig = imread('map2.png');
 
 if strcmp(displayMode, 'on')
@@ -211,11 +211,11 @@ for t = 1 : T
     frameInfo(t).staying = stayList;
 end;
 
-save(['data_rvo_',goalSelectType,'_Campus.mat'], 'agtList');
+save(['data_rvo_',goalSelectType,'_CampusK.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
-save('frameInfo_rvo_dcm_Campus.mat', 'frameInfo');
+save('frameInfo_rvo_dcm_CampusK.mat', 'frameInfo');
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 
