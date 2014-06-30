@@ -67,7 +67,7 @@ statGoals = [];
 statFPS = [];
 
 %% simulation
-T = 6000;
+T = 3000;
 fig = imread('map2.png');
 
 if strcmp(displayMode, 'on')
@@ -95,6 +95,7 @@ for t = 1 : T
         agtList(agtN).pref = [];
         agtList(agtN).traj = [];
         agtList(agtN).stay = 0;
+        agtList(agtN).count = 0;
         
         agtList(agtN) = goal_select_stage(agtList(agtN), G, goalList, dT, Gr);
     end;
@@ -195,6 +196,7 @@ for t = 1 : T
             else
                 agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
             end;
+            agtList(aid).count = agtList(aid).count + 1;
         end;
     end;
     
@@ -212,7 +214,7 @@ for t = 1 : T
     end;
 end;
 
-save(['data_sf_',goalSelectType,'_Campus.mat'], 'agtList');
+save(['data_sf_',goalSelectType,'_CampusL.mat'], 'agtList');
 % save data_sf_rnd agtList;
 % save stat statGoals;
 % save statFPS statFPS;
