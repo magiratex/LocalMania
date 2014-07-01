@@ -1,0 +1,55 @@
+close all;
+clear;
+clc;
+addpath('..\utils');
+
+% load pixWayptrs.mat;
+load pixWayptrs_tradeshow_new.mat;
+
+% load edges.mat;
+load edges_tradeshow_new_divA.mat;
+
+load portals_tradeshow_new.mat;
+
+load graphInfo_tradeshow_divA.mat;
+
+fig = imread('map4.png');
+
+figure;
+imshow(fig);
+hold on;
+
+for i = 1 : size(wayptrs, 1)
+    plot(wayptrs(i,1), wayptrs(i,2), 'ob');
+    text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
+end;
+
+for i = 1 : size(edges, 1)
+    I = edges(i,1);
+    J = edges(i,2);
+    plot([wayptrs(I,1), wayptrs(J,1)], ...
+         [wayptrs(I,2), wayptrs(J,2)], '-b');
+end;
+
+%%
+
+% division A's portals
+tempPortal = [21, 22, 5, 17, 19, 8];
+
+Nsample = 3000;
+for i = 1 : Nsample
+    id = randi(6);
+    e0 = tempPortal(id);
+    
+    % randomly select one its connected node and its index
+    idx = find(Gr.origG(e0, :)~=0);
+    selectid = randi(6);
+    e1 = idx(selectid);
+    
+    % find its succedant
+    hyid = find_ind([e0, e1], Gr.hyind);
+    sucid = find(Gr.hyG(hyid,:) ~= 0);
+    
+    w = attr(hyid, sucid)./sum(attr(hyid, sucid));
+    randsample(numel(s));
+end;
