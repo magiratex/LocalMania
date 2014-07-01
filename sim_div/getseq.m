@@ -33,7 +33,7 @@ for i = 1 : size(wayptrs, 1)
 end;
 
 %%
-
+% 
 % division A's portals
 tempPortal = [21, 22, 5, 17, 19, 8];
 
@@ -73,19 +73,29 @@ for i = 1 : Nsample
     end;
 %     trk
     seq{i} = trk;
-    
-%     thiscol = cmap(randi(7));
-%     for j = 1 : numel(trk)-1
-%         I = trk(j);
-%         J = trk(j+1);
-%         plot([wayptrs(I,1), wayptrs(J,1)], ...
-%              [wayptrs(I,2), wayptrs(J,2)], ['-',thiscol]);
-%     end;
+
+    verbose = 0;
+    if verbose == 1
+        thiscol = cmap(randi(7));
+        for j = 1 : numel(trk)-1
+            I = trk(j);
+            J = trk(j+1);
+            plot([wayptrs(I,1), wayptrs(J,1)], ...
+                 [wayptrs(I,2), wayptrs(J,2)], ['-',thiscol]);
+        end;
+    end;
 end;
 
 %%
-
-
+longseq = [];
+sid = 1;
 for i = 1 : numel(seq)
-    L(i) = length(seq{i});
+    
+    if length(seq{i}) > 5
+        longseq{sid} = seq{i};
+        sid = sid + 1;
+    end;
 end;
+
+
+

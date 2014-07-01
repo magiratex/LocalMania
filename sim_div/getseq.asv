@@ -13,7 +13,15 @@ load portals_tradeshow_new.mat;
 
 load graphInfo_tradeshow_divA.mat;
 
+load attr_tradeshow_divA_interested.mat;
+
 fig = imread('map4.png');
+
+cmap = 'cymgbrk';
+
+%%
+
+
 
 figure;
 imshow(fig);
@@ -24,32 +32,90 @@ for i = 1 : size(wayptrs, 1)
     text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
 end;
 
+%%
+% 
+% % division A's portals
+% tempPortal = [21, 22, 5, 17, 19, 8];
+% 
+% Nsample = 3000;
+% seq = cell(1, Nsample);
+% for i = 1 : Nsample
+% %     id = randi(numel(tempPortal));
+% %     e0 = tempPortal(id);
+%     id = randsample(numel(tempPortal), 1, true, [.3, .3, .1, .1, .1, .1]);
+%     e0 = tempPortal(id);
+%     
+%     % randomly select one its connected node and its index
+%     idx = find(Gr.origG(e0, :)~=0);
+%     selectid = randi(numel(idx));
+%     e1 = idx(selectid);
+%     hyid = find(find_ind([e0, e1], Gr.hypind));
+%     trk = [e0 e1];
+%     
+%     % find its succedant
+%     while 1
+%         sucid = find(Gr.G(hyid,:) ~= 0);
+%         
+%         if sum(attr(hyid, sucid)) == 0
+%             trk = [];
+%             seq{i} = trk;
+%             break;
+%         end;
+%         w = attr(hyid, sucid)./sum(attr(hyid, sucid));
+%         selectsucid = randsample(numel(sucid), 1, true, w);
+%         selectsucid = sucid(selectsucid);
+% 
+%         trk = [trk, Gr.hypind(selectsucid, 2)];
+%         if any(tempPortal == trk(end))
+%             break;
+%         end;
+%         hyid = selectsucid;
+%     end;
+% %     trk
+%     seq{i} = trk;
+% 
+%     verbose = 0;
+%     if verbose == 1
+%         thiscol = cmap(randi(7));
+%         for j = 1 : numel(trk)-1
+%             I = trk(j);
+%             J = trk(j+1);
+%             plot([wayptrs(I,1), wayptrs(J,1)], ...
+%                  [wayptrs(I,2), wayptrs(J,2)], ['-',thiscol]);
+%         end;
+%     end;
+% end;
+
+%% construct a small graph
+divptrs = [1,2,3,4,5,21,22,5,17,8,19];
+wayptrs = wayptrs(divptrs, :);
+sizeg = size(wayptrs, 1);
+[subhG, subhind] = construct_hypergraph(sizeg);
+subedges = [];
 for i = 1 : size(edges, 1)
-    I = edges(i,1);
-    J = edges(i,2);
-    plot([wayptrs(I,1), wayptrs(J,1)], ...
-         [wayptrs(I,2), wayptrs(J,2)], '-b');
+    e0 = find(divptrs == edges(i,1));
+    e1 = find(divptrs == edges(i,2));
+    if 
+        subedges = [subedges; edges(i,:)];
+    end;
 end;
 
 %%
-
-% division A's portals
-tempPortal = [21, 22, 5, 17, 19, 8];
-
-Nsample = 3000;
-for i = 1 : Nsample
-    id = randi(6);
-    e0 = tempPortal(id);
+longseq = [];
+sid = 1;
+for i = 1 : numel(seq)
     
-    % randomly select one its connected node and its index
-    idx = find(Gr.origG(e0, :)~=0);
-    selectid = randi(6);
-    e1 = idx(selectid);
-    
-    % find its succedant
-    hyid = find_ind([e0, e1], Gr.hyind);
-    sucid = find(Gr.hyG(hyid,:) ~= 0);
-    
-    w = attr(hyid, sucid)./sum(attr(hyid, sucid));
-    randsample(numel(s));
+    if length(seq{i}) > 5
+        s = seq{i};
+        sseq = [];
+        hseq = [];
+        for j = 1 : numel(s)
+            sseq = [sseq, find(divAptrs == s(j))];
+        end;
+    end;
 end;
+
+
+M = numel(divAptrs);
+divG.G = zeros(M*M);
+

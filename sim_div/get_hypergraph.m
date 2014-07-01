@@ -17,7 +17,7 @@ load portals_tradeshow_new.mat;
 
 edgeID = [];
 for i = 1 : size(edges, 1)
-    id = find(find_ind(edges(i,:), hyind) == 1);
+    id = find(find_ind(edges(i,1:2), hyind) == 1);
     edgeID = [edgeID, id];
     
     id = find(find_ind(edges(i,[2,1]), hyind) == 1);
