@@ -78,7 +78,7 @@ for i = 1 : size(subGr.G, 1)
     for j = idx
         e0 = subGr.ind(i,1);
         e2 = subGr.ind(j,2);
-        if e0 == e2 && any(tempout == divptrs(e0))
+        if any(tempout == divptrs(e0)) && any(tempout == divptrs(e2))
             subattr(i, j) = -2;
         end;
     end;
