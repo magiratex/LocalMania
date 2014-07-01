@@ -87,8 +87,8 @@ subGr.attr = subattr;
 subGr.tempout = tempout;
 
 %% re-index the sequences and compute the initial probability
-targseq = longseq;
-% targseq = shortseq;
+% targseq = longseq;
+targseq = shortseq;
 for i = 1 : numel(targseq)
     trk = targseq{i};
     
