@@ -66,14 +66,18 @@ usededges = hymatch(:,end)';
 newedges = hymatch(:,1)';
 subattr = zeros(subGr.size * subGr.size);
 for i = 1 : numel(newedges)
-    subattr()
+    I = newedges(i);
+    J = usededges(i);
+    subattr(I,newedges) = attr(J,usededges);
 end;
 subGr.attr = subattr;
 
 %% re-index the sequences and compute the initial probability
+targset
 for i = 1 : numel(longseq)
     trk = longseq{i};
     
+    h = [];
     for j = 1 : numel(trk)-1
         e0 = find(divptrs == trk(j));
         e1 = find(divptrs == trk(j+1));

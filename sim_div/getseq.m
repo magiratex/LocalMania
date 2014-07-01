@@ -37,7 +37,7 @@ end;
 % division A's portals
 tempPortal = [21, 22, 5, 17, 19, 8];
 
-Nsample = 5000;
+Nsample = 3000;
 seq = cell(1, Nsample);
 for i = 1 : Nsample
 %     id = randi(numel(tempPortal));
@@ -93,6 +93,18 @@ for i = 1 : numel(seq)
     
     if length(seq{i}) > 5
         longseq{sid} = seq{i};
+        sid = sid + 1;
+    end;
+end;
+
+%%
+
+shortseq = [];
+sid = 1;
+for i = 1 : numel(seq)
+    
+    if length(seq{i}) < 5 && length(seq{i})>0
+        shortseq{sid} = seq{i};
         sid = sid + 1;
     end;
 end;
