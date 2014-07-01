@@ -70,12 +70,23 @@ for i = 1 : numel(newedges)
     J = usededges(i);
     subattr(I,newedges) = attr(J,usededges);
 end;
+
+% tweak down the return behavior
+for i = 1 : size(subGr.G, 1)
+    idx = find(subGr.G(i, :)~=0);
+    for j = idx
+        e0 = subGr.ind(i,1);
+        e2 = subGr.ind(idx(j), 2);
+        
+    end;
+end;
 subGr.attr = subattr;
 
 %% re-index the sequences and compute the initial probability
-targset
-for i = 1 : numel(longseq)
-    trk = longseq{i};
+targseq = longseq;
+% targseq = shortseq;
+for i = 1 : numel(targseq)
+    trk = targseq{i};
     
     h = [];
     for j = 1 : numel(trk)-1

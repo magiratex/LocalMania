@@ -5,6 +5,7 @@ load edges_tradeshow_new_divA.mat;
 
 %% construct a small graph
 divptrs = [1,2,3,4,5,21,22,16,17,8,19]; % nodes id of division A
+tempout = [21,22,17,5,8,19];
 wayptrs = wayptrs(divptrs, :);
 sizeg = size(wayptrs, 1);
 
@@ -70,7 +71,20 @@ for i = 1 : numel(newedges)
     J = usededges(i);
     subattr(I,newedges) = attr(J,usededges);
 end;
+
+% tweak down the return behavior
+for i = 1 : size(subGr.G, 1)
+    idx = find(subGr.G(i, :)~=0);
+    for j = idx
+        e0 = subGr.ind(i,1);
+        e2 = subGr.ind(j,2);
+        if e0 == e2 && any(tempout == divptrs(e0))
+            subattr(i, j) = -2;
+        end;
+    end;
+end;
 subGr.attr = subattr;
+subGr.tempout = tempout;
 
 %% re-index the sequences and compute the initial probability
 targseq = longseq;
