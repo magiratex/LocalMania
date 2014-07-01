@@ -50,12 +50,18 @@ subGr.attr = attr;
 
 for i = 1 : numel(longseq)
     trk = longseq{i};
+    
     for j = 1 : numel(trk)-1
         e0 = find(divptrs == trk(j));
         e1 = find(divptrs == trk(j+1));
         h(j) = find(find_ind([e0,e1], subhind));
     end;
     hseq{i} = h;
+    initstate(i) = h(1);
 end;
 
 subGr.hseq = hseq;
+for i = 1 : sizeg * sizeg
+    init(i) = sum(initstate == i);
+end;
+subGr.init = init ./ sum(init);

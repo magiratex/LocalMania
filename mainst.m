@@ -31,9 +31,9 @@ backup.Gr = Gr;
 %     wHat
 %     [xHat, ~] = mOptimState(K, C/w, I, (P + 0.1).*Gr.G, beta);
 % else % prior
-%     w = initW;
-%     T = dcm_trans_prob(Gr.G, Gr.ind, w, attrPrior, []);
-%     backup.initw = w;
+w = 1.0;
+T = dcm_trans_prob(Gr.G, Gr.ind, w, attrPrior, []);
+backup.initw = w;
 % end;
 
 %%
