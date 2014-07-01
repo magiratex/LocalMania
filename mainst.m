@@ -1,6 +1,6 @@
 load seq_tradeshow_new_divA.mat;
 Gr = subGr;
-
+hseq = Gr.hseq;
 
 %%
 M = size(Gr.G, 1);

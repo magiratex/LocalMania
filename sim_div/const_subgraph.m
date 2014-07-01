@@ -10,6 +10,7 @@ sizeg = size(wayptrs, 1);
 
 [subhG, subhind] = construct_hypergraph(sizeg);
 
+% re-index the nodes in division A to [1...N]
 subedges = [];
 for i = 1 : size(edges, 1)
     e0 = find(divptrs == edges(i,1));
@@ -21,6 +22,7 @@ end;
 subGr.size = sizeg;
 subGr.edges = subedges;
 
+% setup a new graph and mark out the edges
 subedgeID = [];
 subG = zeros(sizeg);
 for i = 1 : size(subedges, 1)
@@ -39,15 +41,28 @@ subGr.G = subhG;
 subGr.ind = subhind;
 subGr.edgeID = subedgeID;
 
-%%
+
+%% load the corresponding prior
 load attr_tradeshow_divA_interested.mat;
-attr = attr(divptrs, :);
-attr = attr(:, divptrs);
+load graphInfo_tradeshow_divA.mat;
+completeHypind = Gr.hypind;
+hymatch = [];
+for i = 1 : size(subedges, 1)
+    pids = divptrs(subedges(i,1:2));
+    hid = find(find_ind(pids, completeHypind));
+    hymatch = [hymatch; pids, hid];
+    pids = divptrs(subedges(i,[2,1]));
+    hid = find(find_ind(pids, completeHypind));
+    hymatch = [hymatch; pids, hid];
+end;
+subGr.match = hymatch;
+
+usededges = hymatch(:,end)';
+attr = attr(usededges, :);
+attr = attr(:, usededges);
 subGr.attr = attr;
 
-%%
-
-
+%% re-index the sequences and compute the initial probability
 for i = 1 : numel(longseq)
     trk = longseq{i};
     
