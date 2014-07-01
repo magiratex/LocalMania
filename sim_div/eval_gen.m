@@ -28,7 +28,7 @@ end;
 seqCount = 1;
 for k = 1 : K
 
-    seq = hmmgenerate(L, tHat, eHat);
+    seq = hmmgenerate(length, tHat, eHat);
     for t = 1 : length(seq)
         if any(Gr.edgeID == seq(t))
             break; % if there is no ending point, hmm will initialize a new start
