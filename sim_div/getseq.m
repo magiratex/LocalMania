@@ -37,7 +37,7 @@ end;
 % division A's portals
 tempPortal = [21, 22, 5, 17, 19, 8];
 
-Nsample = 3000;
+Nsample = 15000;
 seq = cell(1, Nsample);
 for i = 1 : Nsample
 %     id = randi(numel(tempPortal));
