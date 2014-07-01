@@ -23,14 +23,14 @@ cmap = 'cymgbrk';
 
 
 
-% figure;
-% imshow(fig);
-% hold on;
-% 
-% for i = 1 : size(wayptrs, 1)
-%     plot(wayptrs(i,1), wayptrs(i,2), 'ob');
-%     text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
-% end;
+figure;
+imshow(fig);
+hold on;
+
+for i = 1 : size(wayptrs, 1)
+    plot(wayptrs(i,1), wayptrs(i,2), 'ob');
+    text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
+end;
 
 %%
 % 
