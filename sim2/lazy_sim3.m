@@ -60,6 +60,7 @@ agtN = 0;
 dT = 0.04;
 speed = 4.5;
 param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
+% param = [8.1340   3.9219   0.2392    1.0000    0.4175    5.5159    dT  1  0.93];
 Gr.speed = speed;
 displayMode = 'off';
 statGoals = [];
@@ -102,6 +103,7 @@ for t = 1 : T
         agtList(agtN).pref = [];
         agtList(agtN).traj = [];
         agtList(agtN).stay = 0;
+        agtList(agtN).count = 0;
         
         agtList(agtN) = goal_select_stage(agtList(agtN), G, goalList, dT, Gr);
     end;
@@ -193,12 +195,13 @@ for t = 1 : T
             % otherwise
             if ~max(virtGoals == agtList(aid).gid)
                 agtList(aid).state = 'stay';
-                %agtList(aid).stay = int32(rand(1) * 300 + 100);
+                %agtList(aid).stay = int32(rand(1) * 300);
                 agtList(aid).stay = int32(rand(1) * 10);
                 goalList(agtList(aid).gid).n = goalList(agtList(aid).gid).n + 1;
             else
                 agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
             end;
+            agtList(aid).count = agtList(aid).count + 1;
         end;
     end;
     
@@ -219,6 +222,7 @@ for t = 1 : T
     frameInfo(t).staying = stayList;
 end;
 
+<<<<<<< HEAD
 % save(['data_rvo_',goalSelectType,'_Campus.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
@@ -227,6 +231,13 @@ end;
 save num_goal_select Ngs;
 save record_time TimeRecord;
 
+=======
+save(['data_rvo_',goalSelectType,'_CampusL.mat'], 'agtList');
+% save data_norep_Campus agtList;
+% save stat statGoals;
+% save statFPS statFPS;
+% save('frameInfo_rvo_dcm_CampusK.mat', 'frameInfo');
+>>>>>>> 33db5cdde723f48db1a6a7eb7c80bf8b9457c3a1
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 

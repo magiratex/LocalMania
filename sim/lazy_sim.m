@@ -58,7 +58,7 @@ Gr.speed = speed;
 displayMode = 'off';
 
 %% simulation
-T = 4000;
+T = 3000;
 fig = imread('scene.png');
 
 if strcmp(displayMode, 'on')
@@ -82,6 +82,7 @@ for t = 1 : T
         agtList(agtN).gid = initG;
         agtList(agtN).pref = [];
         agtList(agtN).traj = [];
+        agtList(agtN).count = 0;
         
         if initG == 20
         end;
@@ -138,6 +139,7 @@ for t = 1 : T
             
             % select another goal
             agtList(aid) = goal_select_stage(agtList(aid), G, goalList, dT, Gr);
+            agtList(aid).count = agtList(aid).count + 1;
         end;
 %         if norm(agtList(aid).pos - agtList(aid).goal) < 0.3
 %             %disp('reached');
@@ -159,7 +161,7 @@ for t = 1 : T
     end;
 end;
 
-save(['data_rvo_',goalSelectType,'_tradeshow.mat'], 'agtList');
+save(['data_rvo_',goalSelectType,'_tradeshowL.mat'], 'agtList');
 % save data agtList;
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
