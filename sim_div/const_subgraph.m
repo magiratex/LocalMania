@@ -76,6 +76,7 @@ subGr.attr = subattr;
 for i = 1 : numel(longseq)
     trk = longseq{i};
     
+    h = [];
     for j = 1 : numel(trk)-1
         e0 = find(divptrs == trk(j));
         e1 = find(divptrs == trk(j+1));
