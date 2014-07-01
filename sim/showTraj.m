@@ -11,8 +11,12 @@ fig = fig2;
 
 % load data4.mat;
 % load data6.mat;
-load data_sf_rnd_tradeshow.mat;
+% load data_sf_rnd_tradeshow.mat;
 % load data-rnd3.mat;
+load data_rvo_dcm_tradeshow.mat;
+agt = agtList;
+% load data_sf_dcm_tradeshow.mat;
+% agtList = [agtList, agt];
 cmap = 'cmgrby';
 sc = 0.03;
 

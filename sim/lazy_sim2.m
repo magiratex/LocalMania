@@ -57,14 +57,27 @@ displayMode = 'off';
 statGoals = [];
 statFPS = [];
 
+
+
 %% simulation
 T = 3000;
+global Ngs;
+global TT;
+global TimeRecord;
+Ngs = zeros(T,1);
+TimeRecord = [];
+global goalSelectType;
+goalSelectType = 'dcm';
+
+
+%%
 fig = imread('scene.png');
 
 if strcmp(displayMode, 'on')
     figure;
 end;
 for t = 1 : T
+    TT = t;
     checkTime = cputime;
     if mod(t, 100) == 0
         disp(t);
@@ -185,12 +198,18 @@ for t = 1 : T
     end;
 end;
 
-save data agtList;
+% save data agtList;
 % save stat statGoals;
 % save statFPS statFPS;
+save num_goal_select Ngs;
+save record_time TimeRecord;
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 
+
+
+
+chtime = cputime;
 % fprintf('goal selecting!\n');
 agt.state = 'gs'; % goal selection stage
 % nextG = goal_select(G, agt, Gr, goalList);
@@ -204,4 +223,9 @@ agt.gid = nextG;
 agt.pref = Gr.speed * ((agt.goal(1,:) - agt.pos)/ norm(agt.goal(1,:) - agt.pos));
 agt.state = 'mov'; % moving stage
 
+global Ngs;
+global TT;
+global TimeRecord;
+Ngs(TT,1) = Ngs(TT,1) + 1;
+TimeRecord = [TimeRecord; cputime - chtime];
 

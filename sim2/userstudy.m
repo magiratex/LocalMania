@@ -82,9 +82,12 @@ fig = fig2;
 sc = 0.1;
 
 load scores_rvo_Campus1+2+3.mat;
-id5 = find(v == 5);
-for I = 1 : numel(id5)
-    i = id5(I)
+% id5 = find(v == 5);
+id1 = find(v == 1);
+% for I = 1 : numel(id5)
+%     i = id5(I)
+for I = 1 : numel(id1)
+    i = id1(I)
     imshow(fig);
     hold on;
     %i = indices(I);
@@ -102,7 +105,8 @@ cmap = 'cmgrby';
 imshow(fig);
 hold on;
     
-i = 22;
+% i = 22;
+i = 5;
 if ~isempty(agt(i).traj)
     %plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on', ...
         %'LineWidth', 2.0);
@@ -110,7 +114,8 @@ if ~isempty(agt(i).traj)
     plot(agt(i).traj(1,1)/sc, agt(i).traj(1,2)/sc, 'ob', 'LineSmooth', 'on', 'LineWidth', 2.0);
 end;
     
-i = 711
+% i = 711
+i = 473;
 if ~isempty(agt(i).traj)
     %plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on', ...
         %'LineWidth', 2.0);
@@ -119,7 +124,8 @@ if ~isempty(agt(i).traj)
 end;    
 
 
-i = 685
+% i = 685
+i = 639;
 if ~isempty(agt(i).traj)
     %plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on', ...
         %'LineWidth', 2.0);
@@ -127,27 +133,29 @@ if ~isempty(agt(i).traj)
     plot(agt(i).traj(1,1)/sc, agt(i).traj(1,2)/sc, 'og', 'LineSmooth', 'on', 'LineWidth', 2.0);
 end; 
 
-i = 71
-if ~isempty(agt(i).traj)
-    %plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on', ...
-        %'LineWidth', 2.0);
-    plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, '-m', 'LineSmooth', 'on', 'LineWidth', 2.0);
-    plot(agt(i).traj(1,1)/sc, agt(i).traj(1,2)/sc, 'om', 'LineSmooth', 'on', 'LineWidth', 2.0);
-end; 
+% % i = 71
+% i = 5;
+% if ~isempty(agt(i).traj)
+%     %plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on', ...
+%         %'LineWidth', 2.0);
+%     plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, '-m', 'LineSmooth', 'on', 'LineWidth', 2.0);
+%     plot(agt(i).traj(1,1)/sc, agt(i).traj(1,2)/sc, 'om', 'LineSmooth', 'on', 'LineWidth', 2.0);
+% end; 
 
-i = 303
-if ~isempty(agt(i).traj)
-    %plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on', ...
-        %'LineWidth', 2.0);
-    plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, '-c', 'LineSmooth', 'on', 'LineWidth', 2.0);
-    plot(agt(i).traj(1,1)/sc, agt(i).traj(1,2)/sc, 'oc', 'LineSmooth', 'on', 'LineWidth', 2.0);
-end; 
+% % i = 303
+% i = 228;
+% if ~isempty(agt(i).traj)
+%     %plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, ['-',cmap(mod(i,6)+1)], 'LineSmooth', 'on', ...
+%         %'LineWidth', 2.0);
+%     plot(agt(i).traj(:,1)/sc, agt(i).traj(:,2)/sc, '-c', 'LineSmooth', 'on', 'LineWidth', 2.0);
+%     plot(agt(i).traj(1,1)/sc, agt(i).traj(1,2)/sc, 'oc', 'LineSmooth', 'on', 'LineWidth', 2.0);
+% end; 
 
 
 %%
 
-clc;
-clear;
+% clc;
+% clear;
 close all;
 
 
