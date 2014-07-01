@@ -41,14 +41,6 @@ subGr.G = subhG;
 subGr.ind = subhind;
 subGr.edgeID = subedgeID;
 
-%% find the match of the hyper-index between the subgraph and the complete-graph
-% for i = 1 : numel(divptrs)
-%     for j = 1 : numel(divptrs)
-%         if i ~= j
-%             
-%         end;
-%     end;
-% end;
 
 %% load the corresponding prior
 load attr_tradeshow_divA_interested.mat;
@@ -58,16 +50,25 @@ hymatch = [];
 for i = 1 : size(subedges, 1)
     pids = divptrs(subedges(i,1:2));
     hid = find(find_ind(pids, completeHypind));
-    hymatch = [hymatch; pids, hid];
+    subhid = find(find_ind(subedges(i,1:2), subhind));
+    
+    hymatch = [hymatch; subhid, hid];
+    
     pids = divptrs(subedges(i,[2,1]));
     hid = find(find_ind(pids, completeHypind));
-    hymatch = [hymatch; pids, hid];
+    subhid = find(find_ind(subedges(i,[2,1]), subhind));
+    
+    hymatch = [hymatch; subhid, hid];
 end;
+subGr.match = hymatch;
 
-usededges = hymatch(:,e)';
-attr = attr(usededges, :);
-attr = attr(:, usededges);
-subGr.attr = attr;
+usededges = hymatch(:,end)';
+newedges = hymatch(:,1)';
+subattr = zeros(subGr.size * subGr.size);
+for i = 1 : numel(newedges)
+    subattr()
+end;
+subGr.attr = subattr;
 
 %% re-index the sequences and compute the initial probability
 for i = 1 : numel(longseq)

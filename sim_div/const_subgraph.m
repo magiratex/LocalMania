@@ -50,17 +50,27 @@ hymatch = [];
 for i = 1 : size(subedges, 1)
     pids = divptrs(subedges(i,1:2));
     hid = find(find_ind(pids, completeHypind));
-    hymatch = [hymatch; pids, hid];
+    subhid = find(find_ind(subedges(i,1:2), subhind));
+    
+    hymatch = [hymatch; subhid, hid];
+    
     pids = divptrs(subedges(i,[2,1]));
     hid = find(find_ind(pids, completeHypind));
-    hymatch = [hymatch; pids, hid];
+    subhid = find(find_ind(subedges(i,[2,1]), subhind));
+    
+    hymatch = [hymatch; subhid, hid];
 end;
 subGr.match = hymatch;
 
 usededges = hymatch(:,end)';
-attr = attr(usededges, :);
-attr = attr(:, usededges);
-subGr.attr = attr;
+newedges = hymatch(:,1)';
+subattr = zeros(subGr.size * subGr.size);
+for i = 1 : numel(newedges)
+    I = newedges(i);
+    J = usededges(i);
+    subattr(I,newedges) = attr(J,usededges);
+end;
+subGr.attr = subattr;
 
 %% re-index the sequences and compute the initial probability
 for i = 1 : numel(longseq)
