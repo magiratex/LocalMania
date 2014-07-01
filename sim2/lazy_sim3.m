@@ -223,8 +223,6 @@ for t = 1 : T
     frameInfo(t).staying = stayList;
 end;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 % save(['data_rvo_',goalSelectType,'_Campus.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
@@ -232,19 +230,11 @@ end;
 % save('frameInfo_rvo_dcm_Campus.mat', 'frameInfo');
 save num_goal_select Ngs;
 save record_time TimeRecord;
-
-=======
-=======
->>>>>>> 33db5cdde723f48db1a6a7eb7c80bf8b9457c3a1
 save(['data_rvo_',goalSelectType,'_CampusL.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
 % save('frameInfo_rvo_dcm_CampusK.mat', 'frameInfo');
-<<<<<<< HEAD
->>>>>>> 33db5cdde723f48db1a6a7eb7c80bf8b9457c3a1
-=======
->>>>>>> 33db5cdde723f48db1a6a7eb7c80bf8b9457c3a1
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 

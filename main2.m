@@ -8,7 +8,7 @@ addpath('.\utils');
 warning('OFF', 'optim:fminunc:SwitchingMethod');
 
 rseed = 1431;
-rng(rseed);
+% rng(rseed);
 
 %% ground-truth values
 % nsample     = 5000;
