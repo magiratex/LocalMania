@@ -3,12 +3,20 @@ addpath('..\utils');
 load pixWayptrs_tradeshow_new.mat;
 % load edges_tradeshow_new_divA.mat;
 load edges_tradeshow_new_divB.mat;
+% load edges_tradeshow_new_divC.mat;
+% load edges_tradeshow_new_divD.mat;
 
 %% construct a small graph
 % divptrs = [1,2,3,4,5,21,22,16,17,8,19]; % nodes id of division A
 % tempout = [21,22,17,5,8,19];
 divptrs = [4,16,5,6,17,7,9,14,15,18]; % division B
 tempout = [4,16,14,15,18,9];
+% divptrs = [7,14,15,18,13,9,12,26,19,20]; % division C
+% tempout = [7,19,20,26];
+% divptrs = [9,12,3,19,10,20,25,8,11,23,24]; % division D
+% tempout = [3,9,12,23,24,25];
+
+%%
 wayptrs = wayptrs(divptrs, :);
 sizeg = size(wayptrs, 1);
 
@@ -49,8 +57,14 @@ subGr.edgeID = subedgeID;
 %% load the corresponding prior
 % load attr_tradeshow_divA_interested.mat;
 load attr_tradeshow_divB.mat;
+% load attr_tradeshow_divC.mat;
+% load attr_tradeshow_divD.mat;
 % load graphInfo_tradeshow_divA.mat;
 load graphInfo_tradeshow_divB.mat;
+% load graphInfo_tradeshow_divC.mat;
+% load graphInfo_tradeshow_divD.mat;
+
+%%
 completeHypind = Gr.hypind;
 hymatch = [];
 for i = 1 : size(subedges, 1)
@@ -92,8 +106,9 @@ subGr.attr = subattr;
 subGr.tempout = tempout;
 
 %% re-index the sequences and compute the initial probability
-% targseq = longseq;
-targseq = shortseq;
+clear hseq;
+targseq = longseq;
+% targseq = shortseq;
 for i = 1 : numel(targseq)
     trk = targseq{i};
     

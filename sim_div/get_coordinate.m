@@ -96,7 +96,7 @@ for i = 1 : size(wayptrs, 1)
     text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
 end;
 
-load edges_tradeshow_new_divB.mat;
+load edges_tradeshow_new_divD.mat;
 for i = 1 : size(edges, 1)
     I = edges(i,1);
     J = edges(i,2);
