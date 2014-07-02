@@ -1,11 +1,14 @@
 addpath('..\utils');
 
 load pixWayptrs_tradeshow_new.mat;
-load edges_tradeshow_new_divA.mat;
+% load edges_tradeshow_new_divA.mat;
+load edges_tradeshow_new_divB.mat;
 
 %% construct a small graph
-divptrs = [1,2,3,4,5,21,22,16,17,8,19]; % nodes id of division A
-tempout = [21,22,17,5,8,19];
+% divptrs = [1,2,3,4,5,21,22,16,17,8,19]; % nodes id of division A
+% tempout = [21,22,17,5,8,19];
+divptrs = [4,16,5,6,17,7,9,14,15,18]; % division B
+tempout = [4,16,14,15,18,9];
 wayptrs = wayptrs(divptrs, :);
 sizeg = size(wayptrs, 1);
 
@@ -44,8 +47,10 @@ subGr.edgeID = subedgeID;
 
 
 %% load the corresponding prior
-load attr_tradeshow_divA_interested.mat;
-load graphInfo_tradeshow_divA.mat;
+% load attr_tradeshow_divA_interested.mat;
+load attr_tradeshow_divB.mat;
+% load graphInfo_tradeshow_divA.mat;
+load graphInfo_tradeshow_divB.mat;
 completeHypind = Gr.hypind;
 hymatch = [];
 for i = 1 : size(subedges, 1)

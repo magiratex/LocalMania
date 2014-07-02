@@ -8,7 +8,7 @@ load pixWayptrs_tradeshow_new.mat;
 
 % load edges.mat;
 % load edges_tradeshow_new_divA.mat;
-load edges_tradeshow_new_divC.mat;
+load edges_tradeshow_new_divB.mat;
 
 load portals_tradeshow_new.mat;
 

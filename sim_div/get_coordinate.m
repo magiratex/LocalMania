@@ -80,9 +80,9 @@ end;
 save edges_tradeshow_new_divD edges;
 
 %% show edges
-clc;
-close all;
-clear;
+% clc;
+% close all;
+% clear;
 
 fig = imread('map4.png');
 
@@ -96,7 +96,7 @@ for i = 1 : size(wayptrs, 1)
     text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
 end;
 
-load edges_tradeshow_new_divC.mat;
+load edges_tradeshow_new_divB.mat;
 for i = 1 : size(edges, 1)
     I = edges(i,1);
     J = edges(i,2);
@@ -104,7 +104,7 @@ for i = 1 : size(edges, 1)
          [wayptrs(I,2), wayptrs(J,2)], '-b');
 end;
 
-% indicate the portals
+%% indicate the portals
 portals = [];
 while 1
     [x,y] = ginput(1);
