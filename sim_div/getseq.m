@@ -7,13 +7,16 @@ addpath('..\utils');
 load pixWayptrs_tradeshow_new.mat;
 
 % load edges.mat;
-load edges_tradeshow_new_divA.mat;
+% load edges_tradeshow_new_divA.mat;
+load edges_tradeshow_new_divC.mat;
 
 load portals_tradeshow_new.mat;
 
-load graphInfo_tradeshow_divA.mat;
+% load graphInfo_tradeshow_divA.mat;
+load graphInfo_tradeshow_divB.mat;
 
-load attr_tradeshow_divA_interested.mat;
+% load attr_tradeshow_divA_interested.mat;
+load attr_tradeshow_divB.mat;
 
 fig = imread('map4.png');
 
@@ -35,14 +38,15 @@ end;
 %%
 % 
 % division A's portals
-tempPortal = [21, 22, 5, 17, 19, 8];
+% tempPortal = [21, 22, 5, 17, 19, 8];
+tempPortal = [4, 16, 14, 15, 18, 9];
 
-Nsample = 5000;
+Nsample = 3000;
 seq = cell(1, Nsample);
 for i = 1 : Nsample
-%     id = randi(numel(tempPortal));
-%     e0 = tempPortal(id);
-    id = randsample(numel(tempPortal), 1, true, [.3, .3, .1, .1, .1, .1]);
+
+%     id = randsample(numel(tempPortal), 1, true, [.3, .3, .1, .1, .1, .1]);% divA
+    id = randsample(numel(tempPortal), 1, true, repmat(0.1667, [1, 6]));% divB
     e0 = tempPortal(id);
     
     % randomly select one its connected node and its index
@@ -77,6 +81,7 @@ for i = 1 : Nsample
     verbose = 0;
     if verbose == 1
         thiscol = cmap(randi(7));
+        trk
         for j = 1 : numel(trk)-1
             I = trk(j);
             J = trk(j+1);

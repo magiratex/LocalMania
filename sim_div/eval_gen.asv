@@ -43,12 +43,9 @@ for k = 1 : nsample
     hypseq{seqCount} = seq;
     
     ss = translate_seq(seq, ind);
-    for j = 2 : length(ss)
-        if any(exits == ss(j))
-            break;
-        end;
+    for j = 1 : length(ss)
+        if 
     end;
-    ss = ss(1:j);
     obs{seqCount} = ss;
     seqCount = seqCount + 1;
 end;

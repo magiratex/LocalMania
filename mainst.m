@@ -1,4 +1,5 @@
-load seq_tradeshow_new_divA.mat;
+% load ./sim_div/longseq_tradeshow_new_divA2.mat;
+load ./sim_div/shortseq_tradeshow_new_divA2.mat;
 Gr = subGr;
 hseq = Gr.hseq;
 
