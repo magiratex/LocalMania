@@ -8,7 +8,8 @@ load pixWayptrs_tradeshow_new.mat;
 sizeG = size(wayptrs, 1);
 
 % load edges.mat;
-load edges_tradeshow_new_divD.mat;
+% load edges_tradeshow_new_divD.mat;
+load edges_tradeshow_new.mat;
 G = zeros(sizeG);
 
 load portals_tradeshow_new.mat;

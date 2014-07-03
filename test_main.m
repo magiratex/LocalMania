@@ -52,3 +52,22 @@ save('longd.mat');
 obs = eval_gen(T, Gr, [1,2,3,7,10,11]);
 for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
 n = hist(L,1:10)
+
+%%
+
+clear;
+load ./sim_div/shortseq_tradeshow_new_divA2.mat;
+mainst
+save('shorta.mat');
+obs = eval_gen(T, Gr, [1,2,3,7,10,11]);
+for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
+n = hist(L,1:10)
+
+clear;
+load ./sim_div/longseq_tradeshow_new_divA2.mat;
+mainst
+save('longa.mat');
+obs = eval_gen(T, Gr, [1,2,3,7,10,11]);
+for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
+n = hist(L,1:10)
+
