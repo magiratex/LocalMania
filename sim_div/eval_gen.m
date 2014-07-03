@@ -2,7 +2,7 @@
 function obs = eval_gen(T, Gr, exits)
 
 L = 10;
-nsample = 100;
+nsample = 1000;
 M = size(T, 1);
 Trans = T;
 Init = Gr.init;
