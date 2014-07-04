@@ -8,12 +8,14 @@ load pixWayptrs_tradeshow_new.mat;
 sizeG = size(wayptrs, 1);
 
 % load edges.mat;
-% load edges_tradeshow_new_divD.mat;
-load edges_tradeshow_new.mat;
+load edges_tradeshow_new_divD.mat;
+% load edges_tradeshow_new.mat;
 G = zeros(sizeG);
 
 load portals_tradeshow_new.mat;
-tempouts = [3, 9, 12, 23, 24, 25];
+% tempouts = [21, 22, 5, 17, 19, 8];% div A
+% tempouts = [3, 9, 12, 23, 24, 25];
+tempouts = [3,9,12,23,24,25,16];
 
 [hyG, hyind] = construct_hypergraph(sizeG);
 
@@ -119,10 +121,10 @@ for i = 1 : size(ei, 1)
     val = input('attr: ');
     
     sparseRecord = [sparseRecord; ei(i), ej(i), e0, e1, e2, val];
-    fprintf('also fill in e2: %d ---> e1: %d ---> e0: %d\n~~~~~~~~~\n', e2, e1, e0);
-    I1 = find(find_ind([e2,e1], hyind));
-    I2 = find(find_ind([e1,e0], hyind));
-    sparseRecord = [sparseRecord; I1, I2, e2, e1, e0, val];
+%     fprintf('also fill in e2: %d ---> e1: %d ---> e0: %d\n~~~~~~~~~\n', e2, e1, e0);
+%     I1 = find(find_ind([e2,e1], hyind));
+%     I2 = find(find_ind([e1,e0], hyind));
+%     sparseRecord = [sparseRecord; I1, I2, e2, e1, e0, val];
     hold off;
 end;
 

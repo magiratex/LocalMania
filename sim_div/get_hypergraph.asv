@@ -8,11 +8,13 @@ load pixWayptrs_tradeshow_new.mat;
 sizeG = size(wayptrs, 1);
 
 % load edges.mat;
-load edges_tradeshow_new_divD.mat;
+load edges_tradeshow_new_divA.mat;
+% load edges_tradeshow_new.mat;
 G = zeros(sizeG);
 
 load portals_tradeshow_new.mat;
-tempouts = [3, 9, 12];
+tempouts = [21, 22, 5, 17, ];
+% tempouts = [3, 9, 12, 23, 24, 25];
 
 [hyG, hyind] = construct_hypergraph(sizeG);
 

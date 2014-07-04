@@ -1,0 +1,16 @@
+%% display the heatmap
+clear;
+clc;
+close all;
+
+load ../sim2/data_rvo_dcm_Campus.mat;
+
+data = zeros(500, 500);
+sampleRate = 10;
+
+
+for i = 1 : 100
+    trk = agtList(i).traj(1:sampleRate:end,:);
+    trk = int32(floor(trk));
+    arrayfun()
+end;

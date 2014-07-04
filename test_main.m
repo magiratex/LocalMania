@@ -1,5 +1,28 @@
 clc;
 
+%% Section A
+
+clear;
+% load ./sim_div/shortseq_tradeshow_new_divA3.mat;
+load ./sim_div/shortseq_tradeshow_new_divA5.mat;
+mainst
+save('shorta5.mat');
+obs = eval_gen(T, Gr, [5,6,7,9,10,11]);
+for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
+n = hist(L,1:10)
+
+
+%%
+clear;
+load ./sim_div/longseq_tradeshow_new_divA2.mat;
+mainst
+save('longa.mat');
+obs = eval_gen(T, Gr, [5,6,7,9,10,11]);
+for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
+n = hist(L,1:10)
+
+
+%%
 clear;
 load ./sim_div/shortseq_tradeshow_new_divB.mat;
 mainst
@@ -37,37 +60,39 @@ obs = eval_gen(T, Gr, [1,8,9,10]);
 for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
 n = hist(L,1:10)
 
+
+%% Section D
+%%
 clear;
-load ./sim_div/shortseq_tradeshow_new_divD.mat;
+load ./sim_div/seq_tradeshow_new_divD_moveup.mat;
 mainst
-save('shortd.mat');
+save('moveupd.mat');
+obs = eval_gen(T, Gr, [1,2,3,7,10,11,12]);
 obs = eval_gen(T, Gr, [1,2,3,7,10,11]);
 for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
 n = hist(L,1:10)
 
+
+%% 
+
 clear;
-load ./sim_div/longseq_tradeshow_new_divD.mat;
+load ./sim_div/shortseq_tradeshow_new_divD.mat;
 mainst
-save('longd.mat');
+save('shortd.mat');
+obs = eval_gen(T, Gr, [1,2,3,7,10,11,12]);
 obs = eval_gen(T, Gr, [1,2,3,7,10,11]);
 for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
 n = hist(L,1:10)
 
 %%
-
 clear;
-load ./sim_div/shortseq_tradeshow_new_divA2.mat;
+load ./sim_div/longseq_tradeshow_new_divD.mat;
 mainst
-save('shorta.mat');
+save('longd.mat');
+obs = eval_gen(T, Gr, [1,2,3,7,10,11,12]);
 obs = eval_gen(T, Gr, [1,2,3,7,10,11]);
 for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
 n = hist(L,1:10)
 
-clear;
-load ./sim_div/longseq_tradeshow_new_divA2.mat;
-mainst
-save('longa.mat');
-obs = eval_gen(T, Gr, [1,2,3,7,10,11]);
-for i = 1 : numel(obs), L(i) = numel(obs{i}); end;
-n = hist(L,1:10)
+
 

@@ -96,7 +96,7 @@ for i = 1 : size(wayptrs, 1)
     text(wayptrs(i,1)+0.8, wayptrs(i,2), num2str(i));
 end;
 
-load edges_tradeshow_new_divD.mat;
+load edges_tradeshow_new.mat;
 for i = 1 : size(edges, 1)
     I = edges(i,1);
     J = edges(i,2);
@@ -107,7 +107,7 @@ end;
 %% indicate the portals
 portals = [];
 while 1
-    [x,y] = ginput(1);
+    [x,y] = ginput(1)
     i = find_min_id(x(1),y(1),wayptrs)
     portals = [portals, i];
     str = input('finish? (y)', 's');
