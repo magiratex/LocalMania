@@ -1,11 +1,12 @@
 %% simulation of tradeshow
 
-function lazy_sim3
+function lazy_sim_div
 
 addpath('..\utils\');
 clc; close all;
 
 global goalSelectType;
+goalSelectType = 'dcm';
 
 %% configuration
 % load graph info
@@ -25,17 +26,24 @@ ind = Gr.hypind;
 
 % load attr_Campus1+2.mat;
 % Gr.attr = attr;
-T = []; % FIXME: require precomputed transition 
+% trans = []; % FIXME: require precomputed transition 
+% load trans_tradeshow_new_test.mat;
+% load trans_tradeshow_new.mat;
+% load trans_tradeshow_new_short5.mat;
+% load trans_tradeshow_new_moveupd.mat;
+% load trans_tradeshow_new_s5slm.mat;
+% load trans_tradeshow_new_lssl.mat;
+% load trans_tradeshow_new_mslm.mat;
+% load trans_tradeshow_new_msls.mat;
+% load trans_tradeshow_new_msms.mat;
+load trans_tradeshow_new_msam.mat;
+Gr.T = trans; % transition probability
 
 
-% goal info; construct goal structures
-% goalPos = [0    0;
-%            6    0;
-%            12   0;
-%            9    5;
-%            13   8];
-load pixWayptrs_Campus.mat;
-sc = 0.1;
+% load pixWayptrs_Campus.mat;
+load pixwayptrs_tradeshow_new.mat;
+% sc = 0.1; % FIXME: scale
+sc = 0.0359;
 goalPos = wayptrs * sc;
 Gr.goalPos = goalPos;
 for i = 1 : graphN
@@ -46,30 +54,34 @@ for i = 1 : graphN
     goalList(i).nMax = 10;
 end;
 
-load edges_Campus1+2.mat;
+% load edges_Campus1+2.mat;
+load edges_tradeshow_new.mat;
 Gr.edges = edges;
 Gr.edges(:,3:4) = sc * Gr.edges(:,3:4);
 
-load portals_Campus1+2.mat;
+% load portals_Campus1+2.mat;
+load portals_tradeshow_new.mat;
 Gr.portals = portals;
+portals(portals == 25) = []; % ----------
 
-load virtualgoals_Campus.mat;
+% load virtualgoals_Campus.mat;
+load virtgoals_tradeshow.mat;
 
 % load other simulation info:
 % - rvo parameters
 % - emerging timings
 agtN = 0;
 dT = 0.04;
-speed = 4.5;
-param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
-% param = [8.1340   3.9219   0.2392    1.0000    0.4175    5.5159    dT  1  0.93];
+speed = 3.5;
+% param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
+param = [5.1340   3.9219   0.1392    1.0000    0.1175    5.5159    dT  1  0.93];
 Gr.speed = speed;
 displayMode = 'off';
 statGoals = [];
 statFPS = [];
 
 %% simulation
-T = 3000;
+T = 6000;
 
 global Ngs;
 global TT;
@@ -78,7 +90,7 @@ Ngs = zeros(T,1);
 TimeRecord = [];
 
 %%
-fig = imread('map2.png');
+fig = imread('map4.png');
 
 if strcmp(displayMode, 'on')
     figure;
@@ -94,7 +106,7 @@ for t = 1 : T
 %     if t == 1 || t == 50 || t == 100   % or any new-agent condition
     if mod(t, 10) == 1
         agtN = agtN + 1;
-        initG = randsample(size(portals,2), 1, true, portals(2,:)/sum(portals(2,:)));
+        initG = randsample(numel(portals), 1, true, 1./portals);
         %initG = randi(length(portals));
         initG = portals(1,initG);
         agtList(agtN).seq = initG;  % initial goal
@@ -184,19 +196,13 @@ for t = 1 : T
                     'Color', [1, 0, 0], 'LineStyle', 'o');
             end;
             
-%             % reach any portal
-%             if length(agtList(aid).seq) > 1
-%                 if any(portals == agtList(aid).seq(end))
-%                     agtList(aid).state = 'out';
-%                     continue;
-%                 end;
-%             end;
+
             if strcmp(agtList(aid).state, 'out')
                 continue;
             end;
             
             % otherwise
-            if ~max(virtGoals == agtList(aid).gid)
+            if ~max(virtgoals == agtList(aid).gid)
                 agtList(aid).state = 'stay';
                 %agtList(aid).stay = int32(rand(1) * 300);
                 agtList(aid).stay = int32(rand(1) * 10);
@@ -230,9 +236,9 @@ end;
 % save stat statGoals;
 % save statFPS statFPS;
 % save('frameInfo_rvo_dcm_Campus.mat', 'frameInfo');
-save num_goal_select Ngs;
-save record_time TimeRecord;
-save(['data_rvo_',goalSelectType,'_CampusL.mat'], 'agtList');
+% save num_goal_select Ngs;
+% save record_time TimeRecord;
+save(['data_rvo_',goalSelectType,'_tradeshow_new_msam.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;

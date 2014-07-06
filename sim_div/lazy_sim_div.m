@@ -30,7 +30,14 @@ ind = Gr.hypind;
 % load trans_tradeshow_new_test.mat;
 % load trans_tradeshow_new.mat;
 % load trans_tradeshow_new_short5.mat;
-load trans_tradeshow_new_moveupd.mat;
+% load trans_tradeshow_new_moveupd.mat;
+% load trans_tradeshow_new_s5slm.mat;
+% load trans_tradeshow_new_lssl.mat;
+% load trans_tradeshow_new_mslm.mat;
+% load trans_tradeshow_new_msls.mat;
+% load trans_tradeshow_new_msms.mat;
+% load trans_tradeshow_new_msam.mat;
+load trans_tradeshow_new_msmm.mat;
 Gr.T = trans; % transition probability
 
 
@@ -56,6 +63,9 @@ Gr.edges(:,3:4) = sc * Gr.edges(:,3:4);
 % load portals_Campus1+2.mat;
 load portals_tradeshow_new.mat;
 Gr.portals = portals;
+% portals(portals == 25) = []; % <---------- hard-code
+initprob = [0.2, 0.03, 0.03, 0.03, 0.03, 0.3];
+initprob = initprob ./ sum(initprob);
 
 % load virtualgoals_Campus.mat;
 load virtgoals_tradeshow.mat;
@@ -99,7 +109,7 @@ for t = 1 : T
 %     if t == 1 || t == 50 || t == 100   % or any new-agent condition
     if mod(t, 10) == 1
         agtN = agtN + 1;
-        initG = randsample(numel(portals), 1, true, 1./portals);
+        initG = randsample(numel(portals), 1, true, initprob);
         %initG = randi(length(portals));
         initG = portals(1,initG);
         agtList(agtN).seq = initG;  % initial goal
@@ -231,7 +241,7 @@ end;
 % save('frameInfo_rvo_dcm_Campus.mat', 'frameInfo');
 % save num_goal_select Ngs;
 % save record_time TimeRecord;
-save(['data_rvo_',goalSelectType,'_tradeshow_new2.mat'], 'agtList');
+save(['data_rvo_',goalSelectType,'_tradeshow_new_msmm2.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
