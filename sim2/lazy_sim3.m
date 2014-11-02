@@ -59,15 +59,15 @@ load virtualgoals_Campus.mat;
 agtN = 0;
 dT = 0.04;
 speed = 4.5;
-param = [8.1340   3.9219   0.0392    1.0000    0.1175    2.5159    dT  1  0.93];
+param = [3.1340   1.9219   0.0192    1.0000    0.1175    5.8159    dT  1  0.93];
 % param = [8.1340   3.9219   0.2392    1.0000    0.4175    5.5159    dT  1  0.93];
 Gr.speed = speed;
-displayMode = 'off';
+displayMode = 'on';
 statGoals = [];
 statFPS = [];
 
 %% simulation
-T = 3000;
+T = 6000;
 
 global Ngs;
 global TT;
@@ -119,7 +119,7 @@ for t = 1 : T
         end;
         
         if strcmp(agtList(i).state, 'stay') % not put into the goal
-            stayList = [stayList; agtList(i).pos];
+            stayList = [stayList; t, i, agtList(i).pos, 0, 0, 0, 0, 0, 0];
             agtList(i).stay = agtList(i).stay - 1;
             if agtList(i).stay <= 0
                 goalList(agtList(i).gid).n = goalList(agtList(i).gid).n - 1;
@@ -138,10 +138,16 @@ for t = 1 : T
         hold on;
         plot(goalPos(:, 1)/sc, goalPos(:, 2)/sc, 'Or');
         if ~isempty(conf)
-            plot(conf(:, 3)/sc, conf(:, 4)/sc, 'ob');
+            %plot(conf(:, 3)/sc, conf(:, 4)/sc, 'ob');
+            for i = 1 : size(conf,1)
+                draw_ped_disc(conf(i,3:4)/sc, .3/sc, 0, [], 'blue');
+            end;
         end;
         if ~isempty(stayList)
-            plot(stayList(:, 1)/sc, stayList(:,2)/sc, 'oc');
+            %plot(stayList(:, 1)/sc, stayList(:,2)/sc, 'oc');
+            for i = 1 : size(conf,1)
+                draw_ped_disc(conf(i,3:4)/sc, .3/sc, 0, [], 'blue');
+            end;
         end;
     end;
     
@@ -164,7 +170,10 @@ for t = 1 : T
         agtList(aid).pref = conf(i, 7:8);
         agtList(aid).traj = [agtList(aid).traj; agtList(aid).pos];
         if strcmp(displayMode, 'on')
-            plot(agtList(aid).traj(:,1)/sc, agtList(aid).traj(:,2)/sc, '-b');
+            %plot(agtList(aid).traj(:,1)/sc, agtList(aid).traj(:,2)/sc, '-b');
+            stIdx = max(size(agtList(aid).traj,1)-40, 1);
+            draw_ped_disc(agtList(aid).traj(end,1:2)/sc, .3/sc, 0, ...
+                          agtList(aid).traj(end:stIdx,1:2)/sc, 'blue');
         end;
         
         % check if agents reaches goal
@@ -221,6 +230,9 @@ for t = 1 : T
     
     frameInfo(t).moving = conf;
     frameInfo(t).staying = stayList;
+    
+    imgname = sprintf('imgs/%06d.jpg', t);
+    saveas(gcf, imgname);
 end;
 
 % save(['data_rvo_',goalSelectType,'_Campus.mat'], 'agtList');
@@ -228,13 +240,13 @@ end;
 % save stat statGoals;
 % save statFPS statFPS;
 % save('frameInfo_rvo_dcm_Campus.mat', 'frameInfo');
-save num_goal_select Ngs;
-save record_time TimeRecord;
-save(['data_rvo_',goalSelectType,'_CampusL.mat'], 'agtList');
+% save num_goal_select Ngs;
+% save record_time TimeRecord;
+% save(['data_rvo_',goalSelectType,'_CampusL.mat'], 'agtList');
 % save data_norep_Campus agtList;
 % save stat statGoals;
 % save statFPS statFPS;
-% save('frameInfo_rvo_dcm_CampusK.mat', 'frameInfo');
+save('frameInfo_rvo_dcm_Campus4K.mat', 'frameInfo');
 
 function agt = goal_select_stage(agt, G, goalList, dT, Gr)
 
