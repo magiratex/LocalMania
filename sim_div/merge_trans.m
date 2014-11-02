@@ -1,11 +1,12 @@
-function tot = merge_trans
+function merge_trans
 
 load graphInfo_tradeshow.mat;
 tot = zeros(size(Gr.G));
 
 clearvars -except tot;
 % load ../longa.mat;
-load ../shorta5.mat;
+% load ../shorta5.mat;
+load ../moveupa.mat;
 tot = fill_match(tot, T, subGr.match);
 
 clearvars -except tot;
@@ -15,7 +16,9 @@ tot = fill_match(tot, T, subGr.match);
 
 clearvars -except tot;
 % load ../longc.mat;
-load ../shortc.mat;
+% load ../shortc.mat;
+load ../moveleftc.mat;
+% load ../avoid12c.mat;
 tot = fill_match(tot, T, subGr.match);
 
 clearvars -except tot;
@@ -24,8 +27,8 @@ clearvars -except tot;
 load ../moveupd.mat;
 tot = fill_match(tot, T, subGr.match);
 
-
-
+trans = tot;
+save('trans_tradeshow_new_msmm.mat', 'trans');
 
 %% fill the division matrix to the complete matrix
 % FIXME: didn't deal with the overlapping issue

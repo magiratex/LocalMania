@@ -3,18 +3,18 @@ addpath('..\utils');
 load pixWayptrs_tradeshow_new.mat;
 % load edges_tradeshow_new_divA.mat;
 % load edges_tradeshow_new_divB.mat;
-% load edges_tradeshow_new_divC.mat;
-load edges_tradeshow_new_divD.mat;
+load edges_tradeshow_new_divC.mat;
+% load edges_tradeshow_new_divD.mat;
 
 %% construct a small graph
 % divptrs = [1,2,3,4,5,21,22,16,17,8,19]; % nodes id of division A
 % tempout = [21,22,17,5,8,19];
 % divptrs = [4,16,5,6,17,7,9,14,15,18]; % division B
 % tempout = [4,16,14,15,18,9];
-% divptrs = [7,14,15,18,13,9,12,26,19,20]; % division C
-% tempout = [7,19,20,26];
-divptrs = [9,12,3,19,10,20,25,8,11,23,24]; % division D
-tempout = [3,9,12,23,24,25];
+divptrs = [7,14,15,18,13,9,12,26,19,20]; % division C
+tempout = [7,19,20,26];
+% divptrs = [9,12,3,19,10,20,25,8,11,23,24]; % division D
+% tempout = [3,9,12,23,24,25];
 % divptrs = [9,12,3,19,10,20,25,8,11,23,24,16]; % division D
 % tempout = [3,9,12,23,24,25,16];
 
@@ -60,12 +60,12 @@ subGr.edgeID = subedgeID;
 % load attr_tradeshow_divA_interested.mat;
 % load attr_tradeshow_divA_low2.mat;
 % load attr_tradeshow_divB.mat;
-% load attr_tradeshow_divC.mat;
-load attr_tradeshow_divD.mat;
+load attr_tradeshow_divC.mat;
+% load attr_tradeshow_divD.mat;
 % load graphInfo_tradeshow_divA.mat;
 % load graphInfo_tradeshow_divB.mat;
-% load graphInfo_tradeshow_divC.mat;
-load graphInfo_tradeshow_divD.mat;
+load graphInfo_tradeshow_divC.mat;
+% load graphInfo_tradeshow_divD.mat;
 
 %%
 completeHypind = Gr.hypind;
@@ -131,3 +131,6 @@ for i = 1 : sizeg * sizeg
     init(i) = sum(initstate == i);
 end;
 subGr.init = init ./ sum(init);
+
+%% 
+save('seq_tradeshow_new_divC_avoid12.mat', 'subGr');
